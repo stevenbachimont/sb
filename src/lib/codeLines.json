@@ -1,0 +1,358 @@
+[
+  [
+    [
+      { "text": "// ", "type": "comment" },
+      { "text": "Portfolio Web - Steven Bachimont", "type": "comment" }
+    ],
+    [
+      { "text": "import", "type": "keyword" },
+      { "text": " { ", "type": "paren" },
+      { "text": "onMount", "type": "function" },
+      { "text": ", ", "type": "paren" },
+      { "text": "createSignal", "type": "function" },
+      { "text": " } ", "type": "paren" },
+      { "text": "from", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "'svelte'", "type": "string" },
+      { "text": ";", "type": "paren" }
+    ],
+    [
+      { "text": "import", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "type", "type": "keyword" },
+      { "text": " { ", "type": "paren" },
+      { "text": "Component", "type": "type" },
+      { "text": " } ", "type": "paren" },
+      { "text": "from", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "'svelte'", "type": "string" },
+      { "text": ";", "type": "paren" }
+    ],
+    [
+      { "text": "", "type": "paren" }
+    ],
+    [
+      { "text": "interface", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "Project", "type": "type" },
+      { "text": " {", "type": "brace" }
+    ],
+    [
+      { "text": "  ", "type": "paren" },
+      { "text": "id", "type": "property" },
+      { "text": ": ", "type": "operator" },
+      { "text": "string", "type": "type" },
+      { "text": ";", "type": "paren" }
+    ],
+    [
+      { "text": "  ", "type": "paren" },
+      { "text": "name", "type": "property" },
+      { "text": ": ", "type": "operator" },
+      { "text": "string", "type": "type" },
+      { "text": ";", "type": "paren" }
+    ],
+    [
+      { "text": "  ", "type": "paren" },
+      { "text": "technologies", "type": "property" },
+      { "text": ": ", "type": "operator" },
+      { "text": "string[]", "type": "type" },
+      { "text": ";", "type": "paren" }
+    ],
+    [
+      { "text": "  ", "type": "paren" },
+      { "text": "description", "type": "property" },
+      { "text": ": ", "type": "operator" },
+      { "text": "string", "type": "type" },
+      { "text": ";", "type": "paren" }
+    ],
+    [
+      { "text": "}", "type": "brace" }
+    ],
+    [
+      { "text": "", "type": "paren" }
+    ],
+    [
+      { "text": "const", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "projects", "type": "variable" },
+      { "text": ": ", "type": "operator" },
+      { "text": "Project[]", "type": "type" },
+      { "text": " = [", "type": "paren" }
+    ],
+    [
+      { "text": "  {", "type": "brace" }
+    ],
+    [
+      { "text": "    ", "type": "paren" },
+      { "text": "id", "type": "property" },
+      { "text": ": ", "type": "operator" },
+      { "text": "'portfolio'", "type": "string" },
+      { "text": ",", "type": "paren" }
+    ],
+    [
+      { "text": "    ", "type": "paren" },
+      { "text": "name", "type": "property" },
+      { "text": ": ", "type": "operator" },
+      { "text": "'Portfolio Web'", "type": "string" },
+      { "text": ",", "type": "paren" }
+    ],
+    [
+      { "text": "    ", "type": "paren" },
+      { "text": "technologies", "type": "property" },
+      { "text": ": [", "type": "paren" },
+      { "text": "'SvelteKit'", "type": "string" },
+      { "text": ", ", "type": "paren" },
+      { "text": "'TypeScript'", "type": "string" },
+      { "text": ", ", "type": "paren" },
+      { "text": "'CSS3'", "type": "string" },
+      { "text": "],", "type": "paren" }
+    ],
+    [
+      { "text": "    ", "type": "paren" },
+      { "text": "description", "type": "property" },
+      { "text": ": ", "type": "operator" },
+      { "text": "'Site portfolio moderne'", "type": "string" }
+    ],
+    [
+      { "text": "  }", "type": "brace" }
+    ],
+    [
+      { "text": "];", "type": "paren" }
+    ]
+  ],
+  [
+    [
+      { "text": "// ", "type": "comment" },
+      { "text": "Composant principal", "type": "comment" }
+    ],
+    [
+      { "text": "export", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "default", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "class", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "PortfolioComponent", "type": "type" },
+      { "text": " ", "type": "paren" },
+      { "text": "implements", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "Component", "type": "type" },
+      { "text": " {", "type": "brace" }
+    ],
+    [
+      { "text": "  ", "type": "paren" },
+      { "text": "private", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "isVisible", "type": "variable" },
+      { "text": " = ", "type": "operator" },
+      { "text": "false", "type": "object" },
+      { "text": ";", "type": "paren" }
+    ],
+    [
+      { "text": "  ", "type": "paren" },
+      { "text": "private", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "currentProject", "type": "variable" },
+      { "text": ": ", "type": "operator" },
+      { "text": "Project", "type": "type" },
+      { "text": " | ", "type": "operator" },
+      { "text": "null", "type": "object" },
+      { "text": " = ", "type": "operator" },
+      { "text": "null", "type": "object" },
+      { "text": ";", "type": "paren" }
+    ],
+    [
+      { "text": "", "type": "paren" }
+    ],
+    [
+      { "text": "  ", "type": "paren" },
+      { "text": "constructor", "type": "function" },
+      { "text": "() {", "type": "brace" }
+    ],
+    [
+      { "text": "    ", "type": "paren" },
+      { "text": "onMount", "type": "function" },
+      { "text": "(() => {", "type": "paren" }
+    ],
+    [
+      { "text": "      ", "type": "paren" },
+      { "text": "this", "type": "variable" },
+      { "text": ".", "type": "operator" },
+      { "text": "isVisible", "type": "property" },
+      { "text": " = ", "type": "operator" },
+      { "text": "true", "type": "object" },
+      { "text": ";", "type": "paren" }
+    ],
+    [
+      { "text": "    });", "type": "paren" }
+    ],
+    [
+      { "text": "  }", "type": "brace" }
+    ],
+    [
+      { "text": "", "type": "paren" }
+    ],
+    [
+      { "text": "  ", "type": "paren" },
+      { "text": "public", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "render", "type": "function" },
+      { "text": "(): ", "type": "operator" },
+      { "text": "string", "type": "type" },
+      { "text": " {", "type": "brace" }
+    ],
+    [
+      { "text": "    ", "type": "paren" },
+      { "text": "return", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "\"<div class=\\\"portfolio\\\">\"", "type": "string" },
+      { "text": ";", "type": "paren" }
+    ],
+    [
+      { "text": "      ", "type": "paren" },
+      { "text": "+ ", "type": "operator" },
+      { "text": "this", "type": "variable" },
+      { "text": ".", "type": "operator" },
+      { "text": "getProjectsHTML", "type": "function" },
+      { "text": "()", "type": "paren" }
+    ],
+    [
+      { "text": "      ", "type": "paren" },
+      { "text": "+ ", "type": "operator" },
+      { "text": "\"'</div>'\"", "type": "string" },
+      { "text": ";", "type": "paren" }
+    ],
+    [
+      { "text": "  }", "type": "brace" }
+    ],
+    [
+      { "text": "}", "type": "brace" }
+    ]
+  ],
+  [
+    [
+      { "text": "// ", "type": "comment" },
+      { "text": "API Service", "type": "comment" }
+    ],
+    [
+      { "text": "class", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "ApiService", "type": "type" },
+      { "text": " {", "type": "brace" }
+    ],
+    [
+      { "text": "  ", "type": "paren" },
+      { "text": "private", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "baseUrl", "type": "variable" },
+      { "text": ": ", "type": "operator" },
+      { "text": "string", "type": "type" },
+      { "text": " = ", "type": "operator" },
+      { "text": "'/api'", "type": "string" },
+      { "text": ";", "type": "paren" }
+    ],
+    [
+      { "text": "", "type": "paren" }
+    ],
+    [
+      { "text": "  ", "type": "paren" },
+      { "text": "async", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "get", "type": "function" },
+      { "text": "<T>(url: ", "type": "paren" },
+      { "text": "string", "type": "type" },
+      { "text": "): ", "type": "operator" },
+      { "text": "Promise<T>", "type": "type" },
+      { "text": " {", "type": "brace" }
+    ],
+    [
+      { "text": "    ", "type": "paren" },
+      { "text": "try", "type": "keyword" },
+      { "text": " {", "type": "brace" }
+    ],
+    [
+      { "text": "      ", "type": "paren" },
+      { "text": "const", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "response", "type": "variable" },
+      { "text": " = ", "type": "operator" },
+      { "text": "await", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "fetch", "type": "function" },
+      { "text": "(", "type": "paren" },
+      { "text": "this", "type": "variable" },
+      { "text": ".", "type": "operator" },
+      { "text": "baseUrl", "type": "property" },
+      { "text": " + ", "type": "operator" },
+      { "text": "url", "type": "variable" },
+      { "text": ");", "type": "paren" }
+    ],
+    [
+      { "text": "      ", "type": "paren" },
+      { "text": "if", "type": "keyword" },
+      { "text": " (!", "type": "operator" },
+      { "text": "response", "type": "variable" },
+      { "text": ".", "type": "operator" },
+      { "text": "ok", "type": "property" },
+      { "text": ") {", "type": "brace" }
+    ],
+    [
+      { "text": "        ", "type": "paren" },
+      { "text": "throw", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "new", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "Error", "type": "type" },
+      { "text": "(", "type": "paren" },
+      { "text": "'API Error'", "type": "string" },
+      { "text": ");", "type": "paren" }
+    ],
+    [
+      { "text": "      }", "type": "brace" }
+    ],
+    [
+      { "text": "      ", "type": "paren" },
+      { "text": "return", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "await", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "response", "type": "variable" },
+      { "text": ".", "type": "operator" },
+      { "text": "json", "type": "function" },
+      { "text": "();", "type": "paren" }
+    ],
+    [
+      { "text": "    } ", "type": "paren" },
+      { "text": "catch", "type": "keyword" },
+      { "text": " (", "type": "paren" },
+      { "text": "error", "type": "variable" },
+      { "text": ") {", "type": "brace" }
+    ],
+    [
+      { "text": "      ", "type": "paren" },
+      { "text": "console", "type": "variable" },
+      { "text": ".", "type": "operator" },
+      { "text": "error", "type": "function" },
+      { "text": "(", "type": "paren" },
+      { "text": "'API Error:', ", "type": "string" },
+      { "text": "error", "type": "variable" },
+      { "text": ");", "type": "paren" }
+    ],
+    [
+      { "text": "      ", "type": "paren" },
+      { "text": "throw", "type": "keyword" },
+      { "text": " ", "type": "paren" },
+      { "text": "error", "type": "variable" },
+      { "text": ";", "type": "paren" }
+    ],
+    [
+      { "text": "    }", "type": "brace" }
+    ],
+    [
+      { "text": "  }", "type": "brace" }
+    ],
+    [
+      { "text": "}", "type": "brace" }
+    ]
+  ]
+]
