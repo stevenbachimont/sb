@@ -6,7 +6,7 @@ set -e
 echo "🚀 Démarrage du déploiement..."
 
 # Variables
-PROJECT_NAME="portfolio"
+PROJECT_NAME="sb"
 DOCKER_COMPOSE_FILE="docker-compose.yml"
 
 # Arrêter les conteneurs existants

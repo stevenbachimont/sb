@@ -39,7 +39,7 @@
         <a href="/web" class="nav-link" on:mouseenter={() => toggleDropdown('web')} on:mouseleave={closeDropdown}>
           Web
         </a>
-        <div class="dropdown" class:active={activeDropdown === 'web'} on:mouseenter={() => toggleDropdown('web')} on:mouseleave={closeDropdown} role="menu">
+        <div class="dropdown" class:active={activeDropdown === 'web'} on:mouseenter={() => toggleDropdown('web')} on:mouseleave={closeDropdown} role="menu" tabindex="0">
           <a href="/web/portfolioWeb" on:click={() => isMenuOpen = false}>Portfolio Web</a>
           <a href="/web/outils" on:click={() => isMenuOpen = false}>Outils & Technologies</a>
         </div>

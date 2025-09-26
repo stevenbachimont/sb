@@ -7,13 +7,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     environment:
       - NODE_ENV=production
-      - VITE_EMAIL_HOST=${VITE_EMAIL_HOST}
-      - VITE_EMAIL_PORT=${VITE_EMAIL_PORT}
-      - VITE_EMAIL_USER=${VITE_EMAIL_USER}
-      - VITE_EMAIL_PASS=${VITE_EMAIL_PASS}
-      - VITE_EMAIL_FROM=${VITE_EMAIL_FROM}
     restart: unless-stopped
     volumes:
       - ./logs:/app/logs
