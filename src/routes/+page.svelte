@@ -15,6 +15,7 @@
   let isPaused = false;
   let userControl = false;
   let currentLineIndex = 0;
+  let mobileInput: HTMLInputElement;
   let currentCharIndex = 0;
   let animationLoop: Promise<void> | null = null;
 
@@ -48,6 +49,20 @@
         const codeBg = document.querySelector('.code-bg') as HTMLElement;
         if (codeBg) {
           codeBg.focus();
+          // Forcer l'apparition du clavier sur mobile
+          if (('ontouchstart' in window || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) && mobileInput) {
+            // Délai pour s'assurer que l'input est visible
+            setTimeout(() => {
+              mobileInput.style.position = 'fixed';
+              mobileInput.style.top = '50%';
+              mobileInput.style.left = '50%';
+              mobileInput.style.transform = 'translate(-50%, -50%)';
+              mobileInput.style.opacity = '0.01';
+              mobileInput.style.pointerEvents = 'auto';
+              mobileInput.focus();
+              mobileInput.click();
+            }, 50);
+          }
           console.log('Focus appliqué');
         }
       }, 100);
@@ -56,7 +71,30 @@
       console.log('Retour à l\'animation automatique');
       userControl = false;
       isPaused = false;
+      // Remettre l'input mobile en position cachée
+      if (mobileInput) {
+        mobileInput.style.position = 'absolute';
+        mobileInput.style.left = '-9999px';
+        mobileInput.style.opacity = '0';
+        mobileInput.style.pointerEvents = 'none';
+        mobileInput.blur();
+      }
       startAnimation();
+    }
+  }
+
+  function handleMobileInput(event: Event) {
+    if (userControl && event.target) {
+      const input = event.target as HTMLInputElement;
+      const value = input.value;
+      
+      if (value.length > 0) {
+        // Traiter chaque caractère tapé
+        const lastChar = value[value.length - 1];
+        handleUserInput(lastChar);
+        // Vider l'input pour le prochain caractère
+        input.value = '';
+      }
     }
   }
 
@@ -496,7 +534,16 @@
     aria-hidden="true"
     class:hidden={!showVideo}
   ></video>
-  <div class="code-bg" aria-hidden="true" class:hidden={!showCode} class:vivid={webHover} class:user-control={userControl} on:click={handleCodeClick} on:keydown={handleKeydown} tabindex="0" role="textbox">
+  <!-- Input caché pour le clavier mobile -->
+  <input 
+    bind:this={mobileInput}
+    type="text" 
+    style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;"
+    on:input={handleMobileInput}
+    class:hidden={!userControl}
+  />
+  
+  <div class="code-bg" aria-hidden="true" class:hidden={!showCode} class:vivid={webHover} class:user-control={userControl} on:click={handleCodeClick} on:keydown={handleKeydown} on:touchstart={handleCodeClick} tabindex="0" role="textbox" contenteditable="true" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     <div class="code-container">
       <!-- Message d'indication intégré dans l'animation -->
       {#if userControl}
