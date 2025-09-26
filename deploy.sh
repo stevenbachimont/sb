@@ -7,7 +7,7 @@ echo "🚀 Démarrage du déploiement..."
 
 # Variables
 PROJECT_NAME="portfolio"
-DOCKER_COMPOSE_FILE="docker-compose.production.yml"
+DOCKER_COMPOSE_FILE="docker-compose.yml"
 
 # Arrêter les conteneurs existants
 echo "📦 Arrêt des conteneurs existants..."

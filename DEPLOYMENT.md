@@ -3,7 +3,7 @@
 ## 📋 Configuration Docker Compose
 
 ### Fichiers créés :
-- `docker-compose.production.yml` - Configuration de production
+- `docker-compose.yml` - Configuration de production
 - `Dockerfile` - Image Docker optimisée
 - `nginx.conf` - Configuration Nginx avec SSL
 - `deploy.sh` - Script de déploiement automatisé
@@ -20,7 +20,7 @@ sudo systemctl start docker
 ```
 
 ### 2. Configuration des variables d'environnement
-Créez un fichier `.env.production` sur votre VPS :
+Créez un fichier `.env` sur votre VPS :
 ```bash
 # Configuration email
 VITE_EMAIL_HOST=smtp.gmail.com
@@ -56,17 +56,23 @@ Le déploiement se lance automatiquement à chaque push sur `main` ou `steven`.
 
 ### Vérifier le statut des conteneurs
 ```bash
-docker-compose -f docker-compose.production.yml ps
+docker-compose ps
 ```
 
 ### Voir les logs
 ```bash
-docker-compose -f docker-compose.production.yml logs -f
+docker-compose logs -f
+# Ou pour un service spécifique
+docker-compose logs sb
+docker-compose logs nginx
 ```
 
 ### Redémarrer les services
 ```bash
-docker-compose -f docker-compose.production.yml restart
+docker-compose restart
+# Ou pour un service spécifique
+docker-compose restart sb
+docker-compose restart nginx
 ```
 
 ## 🔒 Sécurité
@@ -80,9 +86,9 @@ docker-compose -f docker-compose.production.yml restart
 ## 🌐 Architecture
 
 ```
-Internet → Nginx (Port 80/443) → Portfolio App (Port 3000)
+Internet → Nginx (Port 80/443) → SB App (Port 3000)
 ```
 
 - **Nginx** : Reverse proxy avec SSL
-- **Portfolio** : Application SvelteKit containerisée
+- **SB** : Application SvelteKit containerisée
 - **Réseau Docker** : Communication sécurisée entre services

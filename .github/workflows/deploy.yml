@@ -50,16 +50,16 @@ jobs:
             
             # Arrêter les conteneurs actuels
             echo "🛑 Arrêt des conteneurs actuels..."
-            docker-compose -f docker-compose.production.yml down
+            docker-compose down
             
             # Construire et démarrer les nouveaux conteneurs
             echo "🔨 Construction et démarrage des conteneurs..."
-            docker-compose -f docker-compose.production.yml up -d --build
+            docker-compose up -d --build
             
             # Vérifier que les conteneurs démarrent correctement
             echo "🔍 Vérification du démarrage..."
             sleep 10
-            docker-compose -f docker-compose.production.yml ps
+            docker-compose ps
             
             # Nettoyer les images Docker inutilisées
             echo "🧹 Nettoyage des images Docker inutilisées..."
