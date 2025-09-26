@@ -15,7 +15,7 @@
   let isPaused = false;
   let userControl = false;
   let currentLineIndex = 0;
-  let mobileInput: HTMLInputElement;
+  let mobileInput: HTMLTextAreaElement;
   let currentCharIndex = 0;
   let animationLoop: Promise<void> | null = null;
 
@@ -44,39 +44,36 @@
       isPaused = true;
       userControl = true;
       isTyping = false;
-      // Focus automatique pour pouvoir taper
-      setTimeout(() => {
-        const codeBg = document.querySelector('.code-bg') as HTMLElement;
-        if (codeBg) {
-          codeBg.focus();
-          // Forcer l'apparition du clavier sur mobile
-          if (('ontouchstart' in window || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) && mobileInput) {
-            // Délai pour s'assurer que l'input est visible
-            setTimeout(() => {
-              mobileInput.style.position = 'fixed';
-              mobileInput.style.top = '50%';
-              mobileInput.style.left = '50%';
-              mobileInput.style.transform = 'translate(-50%, -50%)';
-              mobileInput.style.opacity = '0.01';
-              mobileInput.style.pointerEvents = 'auto';
-              mobileInput.focus();
-              mobileInput.click();
-            }, 50);
+      
+      // Détecter si c'est un appareil mobile
+      const isMobile = 'ontouchstart' in window || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      
+      if (isMobile && mobileInput) {
+        // Sur mobile, utiliser le textarea pour déclencher le clavier
+        console.log('Appareil mobile détecté, activation du textarea');
+        // Forcer l'apparition du clavier avec plusieurs méthodes
+        setTimeout(() => {
+          mobileInput.focus();
+          mobileInput.click();
+          // Déclencher un événement de focus programmatique
+          mobileInput.dispatchEvent(new Event('focus', { bubbles: true }));
+        }, 50);
+      } else {
+        // Sur desktop, utiliser le focus normal
+        setTimeout(() => {
+          const codeBg = document.querySelector('.code-bg') as HTMLElement;
+          if (codeBg) {
+            codeBg.focus();
+            console.log('Focus appliqué sur desktop');
           }
-          console.log('Focus appliqué');
-        }
-      }, 100);
+        }, 100);
+      }
     } else {
       // Reprendre l'animation automatique
       console.log('Retour à l\'animation automatique');
       userControl = false;
       isPaused = false;
-      // Remettre l'input mobile en position cachée
       if (mobileInput) {
-        mobileInput.style.position = 'absolute';
-        mobileInput.style.left = '-9999px';
-        mobileInput.style.opacity = '0';
-        mobileInput.style.pointerEvents = 'none';
         mobileInput.blur();
       }
       startAnimation();
@@ -85,16 +82,25 @@
 
   function handleMobileInput(event: Event) {
     if (userControl && event.target) {
-      const input = event.target as HTMLInputElement;
-      const value = input.value;
+      const textarea = event.target as HTMLTextAreaElement;
+      const value = textarea.value;
       
       if (value.length > 0) {
         // Traiter chaque caractère tapé
-        const lastChar = value[value.length - 1];
-        handleUserInput(lastChar);
-        // Vider l'input pour le prochain caractère
-        input.value = '';
+        for (let i = 0; i < value.length; i++) {
+          handleUserInput(value[i]);
+        }
+        // Vider le textarea pour le prochain caractère
+        textarea.value = '';
       }
+    }
+  }
+
+  function handleMobileBlur() {
+    // Si l'input perd le focus, on peut reprendre l'animation automatique
+    if (userControl) {
+      // Garder le mode utilisateur actif même si l'input perd le focus
+      console.log('Input mobile a perdu le focus, mais mode utilisateur maintenu');
     }
   }
 
@@ -534,14 +540,19 @@
     aria-hidden="true"
     class:hidden={!showVideo}
   ></video>
-  <!-- Input caché pour le clavier mobile -->
-  <input 
+  <!-- Input mobile pour le clavier virtuel -->
+  <textarea 
     bind:this={mobileInput}
-    type="text" 
-    style="position: absolute; left: -9999px; opacity: 0; pointer-events: none;"
+    class="mobile-input"
     on:input={handleMobileInput}
-    class:hidden={!userControl}
-  />
+    on:blur={handleMobileBlur}
+    placeholder=""
+    autocomplete="off"
+    autocorrect="off"
+    autocapitalize="off"
+    spellcheck="false"
+    rows="1"
+  ></textarea>
   
   <div class="code-bg" aria-hidden="true" class:hidden={!showCode} class:vivid={webHover} class:user-control={userControl} on:click={handleCodeClick} on:keydown={handleKeydown} on:touchstart={handleCodeClick} tabindex="0" role="textbox" contenteditable="true" inputmode="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     <div class="code-container">
@@ -1497,6 +1508,38 @@
   .hero-bg-video.video-vivid {
     filter: brightness(1.6) saturate(1.5) contrast(1.2);
     opacity: 0.4;
+  }
+
+  /* Textarea mobile pour le clavier virtuel */
+  .mobile-input {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1px;
+    height: 1px;
+    opacity: 0.01;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: transparent;
+    font-size: 1px;
+    z-index: 1000;
+    pointer-events: auto;
+    resize: none;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+  }
+
+  /* Sur mobile, le textarea devient plus visible quand il est actif */
+  @media (max-width: 768px) {
+    .mobile-input:focus {
+      width: 2px;
+      height: 2px;
+      opacity: 0.1;
+    }
   }
 
 </style>
