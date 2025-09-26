@@ -1,6 +1,6 @@
 import { createTransport } from 'nodemailer';
 import { env } from '$env/dynamic/private';
-import { TemplateService } from './templateService';
+import { EmailTemplateService } from './emailTemplateService';
 
 // Configuration du transporteur email
 const createTransporter = () => {
@@ -30,8 +30,10 @@ const createCustomTransporter = () => {
 // Service d'envoi d'emails
 export class EmailService {
   private transporter: any;
+  private templateService: EmailTemplateService;
 
   constructor() {
+    this.templateService = new EmailTemplateService();
     
     // Utiliser le transporteur Gmail par défaut, sinon le SMTP personnalisé
     if (env.EMAIL_USER && env.EMAIL_APP_PASSWORD) {
@@ -61,43 +63,57 @@ export class EmailService {
   // Envoyer un email de contact
   async sendContactMessage(data: { nom: string; prenom: string; email: string; message: string }): Promise<boolean> {
     try {
+      console.log('📧 Début de l\'envoi d\'email de contact');
       const { nom, prenom, email, message } = data;
-      const currentDate = TemplateService.getCurrentDate();
+      const currentDate = new Date().toLocaleString('fr-FR', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
 
       // Variables pour les templates
-      const templateVariables = {
-        nom,
-        prenom,
-        email,
-        message,
-        date: currentDate
-      };
+      const variables = { nom, prenom, email, message, date: currentDate };
+      
+      console.log('📋 Variables de template:', variables);
+
+      // Récupérer les templates
+      console.log('📝 Chargement des templates...');
+      const adminTemplate = this.templateService.getTemplate('contact', 'admin', variables);
+      const clientTemplate = this.templateService.getTemplate('contact', 'client', variables);
+      const styles = this.templateService.getStyles();
+      console.log('✅ Templates chargés');
 
       // Email pour l'administrateur
       const adminEmail = {
         from: `"Steven Bachimont" <${env.EMAIL_USER}>`,
         to: env.ADMIN_EMAIL || env.EMAIL_USER,
-        subject: `Nouveau message de contact de ${prenom} ${nom}`,
-        html: TemplateService.loadHtmlTemplate('contact-admin', templateVariables),
-        text: TemplateService.loadTextTemplate('contact-admin', templateVariables)
+        subject: adminTemplate.subject,
+        html: this.templateService.generateEmailHTML(adminTemplate, styles),
+        text: this.templateService.generateEmailText(adminTemplate)
       };
 
       // Email de confirmation pour le client
       const clientEmail = {
         from: `"Steven Bachimont" <${env.EMAIL_USER}>`,
         to: email,
-        subject: 'Confirmation de réception de votre message',
-        html: TemplateService.loadHtmlTemplate('contact-client', templateVariables),
-        text: TemplateService.loadTextTemplate('contact-client', templateVariables)
+        subject: clientTemplate.subject,
+        html: this.templateService.generateEmailHTML(clientTemplate, styles),
+        text: this.templateService.generateEmailText(clientTemplate)
       };
 
+      console.log('📤 Envoi des emails...');
       await Promise.all([
         this.transporter.sendMail(adminEmail),
         this.transporter.sendMail(clientEmail)
       ]);
+      console.log('✅ Emails envoyés avec succès');
       return true;
     } catch (error) {
-      console.error('Erreur lors de l\'envoi des emails de contact:', error);
+      console.error('❌ Erreur lors de l\'envoi des emails de contact:', error);
+      console.error('❌ Stack trace:', error.stack);
       throw new Error('Erreur lors de l\'envoi des emails');
     }
   }
