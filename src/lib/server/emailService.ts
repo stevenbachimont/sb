@@ -1,5 +1,6 @@
 import { createTransport } from 'nodemailer';
 import { env } from '$env/dynamic/private';
+import { TemplateService } from './templateService';
 
 // Configuration du transporteur email
 const createTransporter = () => {
@@ -61,21 +62,24 @@ export class EmailService {
   async sendContactMessage(data: { nom: string; prenom: string; email: string; message: string }): Promise<boolean> {
     try {
       const { nom, prenom, email, message } = data;
+      const currentDate = TemplateService.getCurrentDate();
+
+      // Variables pour les templates
+      const templateVariables = {
+        nom,
+        prenom,
+        email,
+        message,
+        date: currentDate
+      };
 
       // Email pour l'administrateur
       const adminEmail = {
         from: `"Steven Bachimont" <${env.EMAIL_USER}>`,
         to: env.ADMIN_EMAIL || env.EMAIL_USER,
         subject: `Nouveau message de contact de ${prenom} ${nom}`,
-        html: `
-          <h2>Nouveau message de contact</h2>
-          <p><strong>Nom:</strong> ${nom}</p>
-          <p><strong>Prénom:</strong> ${prenom}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Message:</strong></p>
-          <p>${message}</p>
-        `,
-        text: `Nouveau message de contact\n\nNom: ${nom}\nPrénom: ${prenom}\nEmail: ${email}\nMessage: ${message}`
+        html: TemplateService.loadHtmlTemplate('contact-admin', templateVariables),
+        text: TemplateService.loadTextTemplate('contact-admin', templateVariables)
       };
 
       // Email de confirmation pour le client
@@ -83,14 +87,8 @@ export class EmailService {
         from: `"Steven Bachimont" <${env.EMAIL_USER}>`,
         to: email,
         subject: 'Confirmation de réception de votre message',
-        html: `
-          <h2>Message reçu</h2>
-          <p>Bonjour ${prenom},</p>
-          <p>J'ai bien reçu votre message et je vous recontacterai dans les plus brefs délais.</p>
-          <p>Merci pour votre intérêt !</p>
-          <p>Cordialement,<br>Steven Bachimont</p>
-        `,
-        text: `Bonjour ${prenom},\n\nJ'ai bien reçu votre message et je vous recontacterai dans les plus brefs délais.\n\nMerci pour votre intérêt !\n\nCordialement,\nSteven Bachimont`
+        html: TemplateService.loadHtmlTemplate('contact-client', templateVariables),
+        text: TemplateService.loadTextTemplate('contact-client', templateVariables)
       };
 
       await Promise.all([
