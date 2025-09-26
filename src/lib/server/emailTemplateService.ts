@@ -1,10 +1,44 @@
-import emailTemplates from './emailTemplates.json';
+import fs from 'fs';
+import path from 'path';
 
 export class EmailTemplateService {
   private templates: any;
 
   constructor() {
-    this.templates = emailTemplates;
+    this.loadTemplates();
+  }
+
+  private loadTemplates() {
+    try {
+      const templatesPath = path.join(process.cwd(), 'src/lib/server/emailTemplates.json');
+      const templatesContent = fs.readFileSync(templatesPath, 'utf8');
+      this.templates = JSON.parse(templatesContent);
+    } catch (error) {
+      console.error('Erreur lors du chargement des templates:', error);
+      this.templates = {};
+    }
+  }
+
+  // Charger un template HTML directement
+  private loadHTMLTemplate(templateName: string): string {
+    try {
+      const templatePath = path.join(process.cwd(), `src/lib/server/templates/${templateName}.html`);
+      return fs.readFileSync(templatePath, 'utf8');
+    } catch (error) {
+      console.error(`Erreur lors du chargement du template ${templateName}:`, error);
+      return '';
+    }
+  }
+
+  // Charger un template texte directement
+  private loadTextTemplate(templateName: string): string {
+    try {
+      const templatePath = path.join(process.cwd(), `src/lib/server/templates/${templateName}.txt`);
+      return fs.readFileSync(templatePath, 'utf8');
+    } catch (error) {
+      console.error(`Erreur lors du chargement du template ${templateName}:`, error);
+      return '';
+    }
   }
 
   // Remplacer les variables dans un template
@@ -19,6 +53,15 @@ export class EmailTemplateService {
 
   // Récupérer un template avec remplacement de variables
   getTemplate(category: string, type: string, variables: Record<string, any> = {}): any {
+    // Pour les templates HTML, retourner directement les variables
+    if (category === 'contact' && (type === 'admin' || type === 'client')) {
+      return {
+        type: type,
+        variables: variables
+      };
+    }
+
+    // Fallback vers l'ancienne méthode pour les autres templates
     const template = this.templates[category]?.[type];
     if (!template) {
       throw new Error(`Template non trouvé: ${category}.${type}`);
@@ -46,6 +89,16 @@ export class EmailTemplateService {
 
   // Générer le HTML d'un email avec le template
   generateEmailHTML(template: any, styles: any): string {
+    // Utiliser les templates HTML existants
+    if (template.type === 'admin') {
+      const htmlTemplate = this.loadHTMLTemplate('contact-admin');
+      return this.replaceVariables(htmlTemplate, template.variables || {});
+    } else if (template.type === 'client') {
+      const htmlTemplate = this.loadHTMLTemplate('contact-client');
+      return this.replaceVariables(htmlTemplate, template.variables || {});
+    }
+
+    // Fallback vers l'ancienne méthode si nécessaire
     return `
       <!DOCTYPE html>
       <html lang="fr">
@@ -186,6 +239,16 @@ export class EmailTemplateService {
 
   // Générer le texte brut d'un email
   generateEmailText(template: any): string {
+    // Utiliser les templates texte existants
+    if (template.type === 'admin') {
+      const textTemplate = this.loadTextTemplate('contact-admin');
+      return this.replaceVariables(textTemplate, template.variables || {});
+    } else if (template.type === 'client') {
+      const textTemplate = this.loadTextTemplate('contact-client');
+      return this.replaceVariables(textTemplate, template.variables || {});
+    }
+
+    // Fallback vers l'ancienne méthode
     let text = '';
 
     if (template.title) text += `${template.title}\n`;
