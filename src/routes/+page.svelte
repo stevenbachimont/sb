@@ -62,6 +62,13 @@
 
   function handleKeydown(event: KeyboardEvent) {
     if (userControl) {
+      // Empêcher le scroll avec la barre espace
+      if (event.key === ' ') {
+        event.preventDefault();
+        addCharacter(' ');
+        return;
+      }
+      
       // Gérer Ctrl+C, Ctrl+V, Ctrl+A
       if (event.ctrlKey || event.metaKey) {
         if (event.key === 'c') {
