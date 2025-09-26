@@ -614,10 +614,6 @@
       overflow-x: hidden !important;
       margin: 0 !important;
     }
-    h1 {
-      font-size: 2rem !important;
-      word-break: break-word;
-    }
   }
   .code-bg {
     position: absolute;

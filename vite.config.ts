@@ -13,11 +13,7 @@ export default defineConfig(({ mode }) => {
 			'process.env.NODE_ENV': JSON.stringify(mode === 'test' ? 'test' : process.env.NODE_ENV || 'development')
 		},
 		plugins: [
-			sveltekit(),
-			paraglideVitePlugin({
-				project: './project.inlang',
-				outdir: './src/lib/paraglide'
-			})
+			sveltekit()
 		],
 		server: {
 			host: '0.0.0.0',
