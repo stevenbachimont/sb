@@ -1,5 +1,5 @@
 {
-	"name": "monsite",
+	"name": "sb",
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
@@ -43,6 +43,7 @@
 	},
 	"dependencies": {
 		"@inlang/paraglide-js": "^2.0.0",
+		"@sveltejs/adapter-node": "^5.3.2",
 		"@types/nodemailer": "^7.0.0",
 		"dotenv": "^17.2.1",
 		"nodemailer": "^7.0.5"

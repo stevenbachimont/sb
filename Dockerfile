@@ -7,8 +7,8 @@ WORKDIR /app
 # Copier les fichiers de dépendances
 COPY package*.json ./
 
-# Installer les dépendances
-RUN npm ci --only=production
+# Installer toutes les dépendances (dev + prod) pour le build
+RUN npm ci
 
 # Copier le code source
 COPY . .
@@ -51,4 +51,4 @@ ENV NODE_ENV=production
 ENV PORT=3000
 
 # Commande de démarrage
-CMD ["node", "build"]
+CMD ["node", "build/index.js"]
