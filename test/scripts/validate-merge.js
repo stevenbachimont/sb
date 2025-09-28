@@ -1,10 +1,4 @@
 #!/usr/bin/env node
-
-/**
- * Script de validation de merge pour GitHub Actions
- * Vérifie que le code est prêt pour le déploiement
- */
-
 import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
@@ -75,6 +69,7 @@ function checkCodeQuality() {
 	} catch (error) {
 		console.log('⚠️  Problèmes de linting détectés, mais continuation...');
 		console.log('💡 Utilisez "npm run format" pour corriger automatiquement');
+		// Ne pas faire échouer le script pour des problèmes de linting
 	}
 
 	// Vérifier la compilation TypeScript
