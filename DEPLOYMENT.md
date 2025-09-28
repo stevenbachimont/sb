@@ -3,6 +3,7 @@
 ## 📋 Configuration Docker Compose
 
 ### Fichiers créés :
+
 - `docker-compose.yml` - Configuration de production
 - `Dockerfile` - Image Docker optimisée
 - `nginx.conf` - Configuration Nginx avec SSL
@@ -11,6 +12,7 @@
 ## 🔧 Configuration sur le VPS
 
 ### 1. Installation des prérequis
+
 ```bash
 # Sur votre VPS
 sudo apt update
@@ -20,7 +22,9 @@ sudo systemctl start docker
 ```
 
 ### 2. Configuration des variables d'environnement
+
 Créez un fichier `.env` sur votre VPS :
+
 ```bash
 # Configuration email
 VITE_EMAIL_HOST=smtp.gmail.com
@@ -31,6 +35,7 @@ VITE_EMAIL_FROM=votre_email@gmail.com
 ```
 
 ### 3. Configuration SSL avec Let's Encrypt
+
 ```bash
 # Obtenir le certificat SSL
 sudo certbot --nginx -d stevenbachimont.com -d www.stevenbachimont.com
@@ -43,6 +48,7 @@ sudo cp /etc/letsencrypt/live/stevenbachimont.com/privkey.pem ./ssl/key.pem
 ## 🚀 Déploiement
 
 ### Déploiement manuel
+
 ```bash
 # Sur votre VPS
 cd /root/sb
@@ -50,16 +56,19 @@ cd /root/sb
 ```
 
 ### Déploiement automatique via GitHub Actions
+
 Le déploiement se lance automatiquement à chaque push sur `main` ou `steven`.
 
 ## 📊 Monitoring
 
 ### Vérifier le statut des conteneurs
+
 ```bash
 docker-compose ps
 ```
 
 ### Voir les logs
+
 ```bash
 docker-compose logs -f
 # Ou pour un service spécifique
@@ -68,6 +77,7 @@ docker-compose logs nginx
 ```
 
 ### Redémarrer les services
+
 ```bash
 docker-compose restart
 # Ou pour un service spécifique

@@ -9,10 +9,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout du code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Récupérer tout l'historique pour les comparaisons
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -23,8 +25,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
+      - name: Run unit tests
         run: npm run test:unit
+
+      - name: Run merge validation tests
+        run: npm run test:unit -- --reporter=verbose src/merge.spec.ts
+
+      - name: Validate merge quality
+        run: |
+          echo "🔍 Validation complète du merge..."
+          node scripts/validate-merge.js
+
+      - name: Check code quality
+        run: |
+          echo "🔍 Vérification de la qualité du code..."
+          npm run lint
+          npm run check
 
   deploy:
     runs-on: ubuntu-latest
@@ -43,27 +59,27 @@ jobs:
           port: 22
           script: |
             cd /root/sb
-            
+
             # Récupérer les derniers changements
             echo "📥 Récupération des derniers changements..."
             git pull origin ${{ github.ref_name }}
-            
+
             # Arrêter les conteneurs actuels
             echo "🛑 Arrêt des conteneurs actuels..."
             docker-compose down
-            
+
             # Construire et démarrer les nouveaux conteneurs
             echo "🔨 Construction et démarrage des conteneurs..."
             docker-compose up -d --build
-            
+
             # Vérifier que les conteneurs démarrent correctement
             echo "🔍 Vérification du démarrage..."
             sleep 10
             docker-compose ps
-            
+
             # Nettoyer les images Docker inutilisées
             echo "🧹 Nettoyage des images Docker inutilisées..."
             docker image prune -f
             docker system prune -f --volumes
-            
-            echo "✅ Déploiement terminé" 
+
+            echo "✅ Déploiement terminé"

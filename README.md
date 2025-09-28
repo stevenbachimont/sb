@@ -12,17 +12,20 @@ Site web portfolio présentant des projets de développement web et des outils t
 ## 🚀 Installation et Démarrage
 
 1. **Cloner le projet**
+
 ```bash
 git clone <url-du-repo>
 cd monsite
 ```
 
 2. **Installer les dépendances**
+
 ```bash
 npm install
 ```
 
 3. **Configurer l'environnement**
+
 ```bash
 # Option 1 : Script automatique
 ./setup-env.sh
@@ -33,6 +36,7 @@ cp env.example .env
 ```
 
 4. **Lancer le serveur de développement**
+
 ```bash
 npm run dev
 ```
@@ -87,10 +91,12 @@ ADMIN_EMAIL=votre-email-admin@gmail.com
 **⚠️ IMPORTANT** : Pour que les paiements fonctionnent, vous devez configurer Stripe.
 
 ### 1. Créer un compte Stripe
+
 - Allez sur [stripe.com](https://stripe.com) et créez un compte
 - Obtenez vos clés API sur le [dashboard Stripe](https://dashboard.stripe.com/apikeys)
 
 ### 2. Configurer les variables Stripe
+
 Ajoutez ces variables dans votre fichier `.env` :
 
 ```bash
@@ -102,11 +108,13 @@ PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_votre_cle_publique_stripe
 ```
 
 ### 3. Configurer le webhook Stripe
+
 1. Allez sur [dashboard.stripe.com/webhooks](https://dashboard.stripe.com/webhooks)
 2. Ajoutez un endpoint : `https://votre-domaine.com/api/payment/webhook`
 3. Sélectionnez les événements : `payment_intent.succeeded`, `payment_intent.payment_failed`
 
 ### 4. Guide complet
+
 Consultez le [Guide de Déploiement Stripe](GUIDE_DEPLOIEMENT_STRIPE.md) pour plus de détails.
 
 ## Déploiement Docker
@@ -126,11 +134,13 @@ docker-compose up -d
 ## 🛠️ API de Gestion des Balades
 
 ### Récupérer les Balades
+
 ```bash
 GET /api/balades
 ```
 
 ### Créer une Réservation
+
 ```bash
 POST /api/balades/reservation
 Content-Type: application/json
@@ -146,19 +156,23 @@ Content-Type: application/json
 ```
 
 ### Base de Données
+
 Les données sont stockées dans `data/balades.db` avec les tables :
+
 - `balades` : Informations des balades (date, heure, lieu, thème, places disponibles, etc.)
 - `reservations` : Historique des réservations
 
 ### Gestion des Balades
 
 #### Interface Web d'Administration
+
 Accédez à l'interface d'administration sécurisée : `/admin`
 
 **Code d'accès :** Configuré dans le fichier `.env` (variable `ADMIN_ACCESS_CODE`)
 **Code par défaut :** `argentique2024`
 
 **Fonctionnalités :**
+
 - 🔐 Authentification par code
 - 📋 Gestion complète des balades (ajouter, modifier, supprimer)
 - 🗺️ **Gestion des parcours étape par étape** (ajout, modification, réorganisation, suppression)
@@ -168,6 +182,7 @@ Accédez à l'interface d'administration sécurisée : `/admin`
 - 📊 Statistiques
 
 #### Script de Maintenance (Alternative)
+
 Pour gérer les balades en ligne de commande :
 
 ```bash
@@ -179,6 +194,7 @@ node scripts/manage-balades.js
 ```
 
 **Fonctionnalités :**
+
 - 📋 Lister toutes les balades
 - ➕ Ajouter une nouvelle balade
 - ✏️ Modifier une balade existante
@@ -190,6 +206,7 @@ node scripts/manage-balades.js
 La documentation complète du projet est organisée par thématiques dans le dossier `docs/` :
 
 ### 🎯 **Documentation Principale**
+
 - **[📚 Documentation Complète](./docs/README.md)** - Index principal de toute la documentation
 - **[🔐 Administration](./docs/01-administration/)** - Interface d'administration et gestion
 - **[💳 Paiements Stripe](./docs/02-paiements-stripe/)** - Configuration et déploiement des paiements
@@ -204,6 +221,7 @@ La documentation complète du projet est organisée par thématiques dans le dos
 - **[🏗️ Architecture Technique](./docs/11-architecture-technique/)** - Architecture et spécifications techniques
 
 ### 🚀 **Démarrage Rapide**
+
 - **Développeurs** : Consultez [Architecture Technique](./docs/11-architecture-technique/) et [Déploiement](./docs/07-deploiement-configuration/)
 - **Administrateurs** : Consultez [Administration](./docs/01-administration/) et [Système de Balades](./docs/04-systeme-balades/)
 - **Utilisateurs** : Consultez [Guides Utilisateur](./docs/10-guides-utilisateur/)
@@ -223,6 +241,7 @@ npm run test:stripe  # Tests Stripe
 ```
 
 ### Couverture des Tests
+
 - ✅ **Service de gestion des balades**
 - ✅ **Validation des données**
 - ✅ **Interface utilisateur**
@@ -231,4 +250,5 @@ npm run test:stripe  # Tests Stripe
 - ✅ **💳 Tests Stripe** (paiements, webhooks, emails)
 
 > **📚 Documentation détaillée** : Consultez [Tests & Qualité](./docs/08-tests-qualite/) pour la documentation complète des tests.
+
 # sb

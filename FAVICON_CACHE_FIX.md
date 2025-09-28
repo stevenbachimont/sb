@@ -1,11 +1,13 @@
 # 🔧 Correction du cache du favicon
 
 ## Problème
+
 Le favicon ne se met pas à jour en production malgré le déploiement sur GitHub et le VPS.
 
 ## Solutions immédiates
 
 ### 1. Côté navigateur (à faire maintenant)
+
 ```bash
 # Vider le cache du navigateur
 Ctrl + F5 (Windows/Linux)
@@ -17,6 +19,7 @@ Ctrl + Shift + P (Firefox)
 ```
 
 ### 2. Côté serveur (VPS)
+
 ```bash
 # Se connecter au VPS
 ssh user@votre-vps
@@ -34,6 +37,7 @@ sudo systemctl reload nginx
 ```
 
 ### 3. Vérification
+
 ```bash
 # Tester l'accès au favicon
 curl -I https://votre-domaine.com/favicon.png
@@ -45,7 +49,9 @@ curl -I https://votre-domaine.com/static/favicon.png
 ## Solutions permanentes
 
 ### 1. Configuration nginx (recommandée)
+
 Ajouter dans la configuration nginx :
+
 ```nginx
 # Configuration spécifique pour favicon.png
 location = /favicon.png {
@@ -62,9 +68,11 @@ location = /static/favicon.png {
 ```
 
 ### 2. Paramètre de version (déjà appliqué)
+
 Le favicon dans `app.html` inclut maintenant `?v=2` pour forcer la mise à jour.
 
 ### 3. Script de déploiement
+
 Utiliser `scripts/deploy-with-favicon-fix.sh` pour les futurs déploiements.
 
 ## Pourquoi ce problème ?

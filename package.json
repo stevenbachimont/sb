@@ -15,7 +15,9 @@
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run && npm run test:e2e",
 		"test:e2e": "playwright test",
-		"test:all": "npm run test:unit -- --run"
+		"test:all": "npm run test:unit -- --run",
+		"test:merge": "vitest src/merge.spec.ts --run",
+		"validate:merge": "node scripts/validate-merge.js"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",

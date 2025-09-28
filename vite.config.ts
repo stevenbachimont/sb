@@ -6,15 +6,15 @@ import { defineConfig, loadEnv } from 'vite';
 export default defineConfig(({ mode }) => {
 	// Charger les variables d'environnement
 	const env = loadEnv(mode, process.cwd(), '');
-	
+
 	return {
 		define: {
 			'process.env.VITEST': JSON.stringify(mode === 'test' ? 'true' : 'false'),
-			'process.env.NODE_ENV': JSON.stringify(mode === 'test' ? 'test' : process.env.NODE_ENV || 'development')
+			'process.env.NODE_ENV': JSON.stringify(
+				mode === 'test' ? 'test' : process.env.NODE_ENV || 'development'
+			)
 		},
-		plugins: [
-			sveltekit()
-		],
+		plugins: [sveltekit()],
 		server: {
 			host: '0.0.0.0',
 			port: 3000,

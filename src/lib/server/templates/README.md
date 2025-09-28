@@ -16,12 +16,14 @@ templates/
 ## 🎨 Templates disponibles
 
 ### Contact Admin
+
 - **Fichier HTML** : `contact-admin.html`
 - **Fichier texte** : `contact-admin.txt`
 - **Destinataire** : Steven Bachimont
 - **Contenu** : Informations du message de contact
 
 ### Contact Client
+
 - **Fichier HTML** : `contact-client.html`
 - **Fichier texte** : `contact-client.txt`
 - **Destinataire** : Client qui a envoyé le message
@@ -51,11 +53,11 @@ Pour modifier les templates :
 ```typescript
 // Dans emailService.ts
 const templateVariables = {
-  nom: 'Dupont',
-  prenom: 'Jean',
-  email: 'jean.dupont@example.com',
-  message: 'Bonjour, j\'aimerais discuter d\'un projet...',
-  date: 'lundi 15 janvier 2024 à 14:30'
+	nom: 'Dupont',
+	prenom: 'Jean',
+	email: 'jean.dupont@example.com',
+	message: "Bonjour, j'aimerais discuter d'un projet...",
+	date: 'lundi 15 janvier 2024 à 14:30'
 };
 
 // Le template sera automatiquement rempli
