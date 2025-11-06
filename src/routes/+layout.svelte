@@ -121,7 +121,9 @@
 			<div class="footer-section">
 				<h3>Contact</h3>
 				<div class="contact-info">
-					<p>📧 contact@stevenbachimont.com</p>
+					<a href="/contact">
+						<p>Contact</p>
+					</a>
 					<p>🌐 stevenbachimont.com</p>
 				</div>
 				<div class="social-links">
