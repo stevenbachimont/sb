@@ -91,14 +91,6 @@
 				<h3>Partenaires</h3>
 				<div class="partners">
 					<div class="partner">
-						<h4>Photographie</h4>
-						<div class="partner-logos">
-							<span class="partner-logo"></span>
-							<span class="partner-logo"></span>
-							<span class="partner-logo"></span>
-						</div>
-					</div>
-					<div class="partner">
 						<h4>Paiements</h4>
 						<div class="partner-logos">
 							<span class="partner-logo">Stripe</span>
