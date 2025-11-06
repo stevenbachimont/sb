@@ -99,16 +99,6 @@
 				</div>
 			</div>
 
-			<!-- Mentions légales -->
-			<div class="footer-section">
-				<h3>Mentions légales</h3>
-				<div class="legal-links">
-					<a href="/conditions-generales">Conditions Générales de Vente</a>
-					<a href="/politique-confidentialite">Politique de Confidentialité</a>
-					<a href="/mentions-legales">Mentions Légales</a>
-				</div>
-			</div>
-
 			<!-- Contact et réseaux -->
 			<div class="footer-section">
 				<h3>Contact</h3>
