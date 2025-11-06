@@ -29,12 +29,12 @@ jobs:
         run: npm run test:unit
 
       - name: Run merge validation tests
-        run: npm run test:unit -- --reporter=verbose src/merge.spec.ts
+        run: npm run test:unit -- --reporter=verbose test/merge.spec.ts
 
       - name: Validate merge quality
         run: |
           echo "🔍 Validation complète du merge..."
-          node scripts/validate-merge.js
+          node test/scripts/validate-merge.js
 
       - name: Check code quality
         run: |
