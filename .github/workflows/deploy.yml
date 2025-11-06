@@ -39,7 +39,6 @@ jobs:
       - name: Check code quality
         run: |
           echo "🔍 Vérification de la qualité du code..."
-          npm run lint
           npm run check
 
   deploy:

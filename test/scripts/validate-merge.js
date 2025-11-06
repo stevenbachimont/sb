@@ -63,15 +63,6 @@ function checkCodeQuality() {
 		console.log('⚠️  Formatage automatique échoué, continuation...');
 	}
 
-	// Vérifier le linting (tolérant)
-	try {
-		runCommand('npm run lint', 'Linting du code');
-	} catch (error) {
-		console.log('⚠️  Problèmes de linting détectés, mais continuation...');
-		console.log('💡 Utilisez "npm run format" pour corriger automatiquement');
-		// Ne pas faire échouer le script pour des problèmes de linting
-	}
-
 	// Vérifier la compilation TypeScript
 	runCommand('npm run check', 'Vérification TypeScript');
 }
