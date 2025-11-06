@@ -121,7 +121,7 @@
 			<div class="footer-section">
 				<h3>Contact</h3>
 				<div class="contact-info">
-					<a href="/contact">
+					<a href="/contact" class="contact-link">
 						<p>Contact</p>
 					</a>
 					<p>🌐 stevenbachimont.com</p>
@@ -436,6 +436,14 @@
 		flex-direction: row;
 		gap: 1rem;
 		flex-wrap: wrap;
+	}
+
+	.contact-link {
+		color: var(--color-text-secondary);
+		text-decoration: none;
+		transition: all 0.3s ease;
+		padding: 0.1rem 0;
+		font-size: 0.75rem;
 	}
 
 	.legal-links a {
