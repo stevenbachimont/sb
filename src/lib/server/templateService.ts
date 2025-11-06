@@ -42,7 +42,8 @@ export class TemplateService {
 		} catch (error) {
 			console.error(`Erreur lors du chargement du template ${templateName}:`, error);
 			console.error(`Chemin tenté: ${join(this.getTemplatesPath(), templateName)}`);
-			throw new Error(`Template ${templateName} introuvable: ${error.message}`);
+			const errorMessage = error instanceof Error ? error.message : String(error);
+			throw new Error(`Template ${templateName} introuvable: ${errorMessage}`);
 		}
 	}
 

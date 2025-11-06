@@ -117,7 +117,9 @@ export class EmailService {
 			return true;
 		} catch (error) {
 			console.error("❌ Erreur lors de l'envoi des emails de contact:", error);
-			console.error('❌ Stack trace:', error.stack);
+			if (error instanceof Error) {
+				console.error('❌ Stack trace:', error.stack);
+			}
 			throw new Error("Erreur lors de l'envoi des emails");
 		}
 	}
