@@ -143,7 +143,7 @@
 
 <section class="contact-section {isVisible ? 'fade-in' : ''}">
 	<div class="contact-header">
-		<h1>📧 Contact</h1>
+		<h1>Contact</h1>
 		<p>
 			N'hésitez pas à me contacter pour toute demande de collaboration, projet web, ou simplement
 			pour échanger. Je réponds rapidement à tous les messages !
