@@ -106,7 +106,7 @@
 					<a href="/contact" class="contact-link">
 						<p>Contact</p>
 					</a>
-					<p>🌐 stevenbachimont.com</p>
+					<a href="https://stevenbachimont.com" target="_blank" rel="noopener noreferrer">🌐 stevenbachimont.com</a>
 				</div>
 				<div class="social-links">
 					<a

@@ -13,11 +13,38 @@ interface ContactData {
 	prenom: string;
 	email: string;
 	message: string;
+	honeypot?: string; // Champ honeypot pour la protection anti-robots
+	formFillTime?: number; // Temps de remplissage du formulaire en millisecondes
 }
 
 export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const data: ContactData = await request.json();
+
+		// Protection anti-robots : vérifier le honeypot
+		if (data.honeypot && data.honeypot.trim() !== '') {
+			// Un robot a rempli le champ honeypot
+			console.warn('⚠️ Tentative de soumission détectée comme robot (honeypot rempli)');
+			return json(
+				{
+					error: 'Soumission rejetée'
+				},
+				{ status: 403 }
+			);
+		}
+
+		// Protection anti-robots : vérifier le temps de remplissage
+		// Un humain prend au moins 3 secondes pour remplir le formulaire
+		// Les robots soumettent généralement en moins de 2 secondes
+		if (data.formFillTime !== undefined && data.formFillTime < 2000) {
+			console.warn('⚠️ Tentative de soumission détectée comme robot (temps de remplissage trop court)');
+			return json(
+				{
+					error: 'Soumission rejetée'
+				},
+				{ status: 403 }
+			);
+		}
 
 		// Validation des données
 		const errors: string[] = [];
@@ -48,7 +75,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			);
 		}
 
-		// Nettoyage des données
+		// Nettoyage des données (exclure les champs de protection)
 		const sanitizedData = {
 			nom: data.nom.trim(),
 			prenom: data.prenom.trim(),

@@ -9,6 +9,10 @@
 	let error = '';
 	let loading = false;
 	let isVisible = false;
+	
+	// Protection anti-robots
+	let honeypot = ''; // Champ caché pour attraper les robots
+	let formStartTime = Date.now(); // Timestamp de début de remplissage
 
 	// Validation côté client
 	let errors = {
@@ -22,6 +26,8 @@
 		setTimeout(() => {
 			isVisible = true;
 		}, 100);
+		// Initialiser le timestamp au chargement de la page
+		formStartTime = Date.now();
 	});
 
 	function validateForm() {
@@ -92,6 +98,9 @@
 		error = '';
 		sent = false;
 
+		// Calculer le temps de remplissage du formulaire
+		const formFillTime = Date.now() - formStartTime;
+
 		try {
 			const response = await fetch('/api/contact', {
 				method: 'POST',
@@ -102,7 +111,10 @@
 					nom: nom.trim(),
 					prenom: prenom.trim(),
 					email: email.trim().toLowerCase(),
-					message: message.trim()
+					message: message.trim(),
+					// Protection anti-robots
+					honeypot: honeypot,
+					formFillTime: formFillTime
 				})
 			});
 
@@ -137,6 +149,8 @@
 		nom = prenom = email = message = '';
 		error = '';
 		sent = false;
+		honeypot = '';
+		formStartTime = Date.now();
 		errors = { nom: '', prenom: '', email: '', message: '' };
 	}
 </script>
@@ -208,6 +222,19 @@
 				{/if}
 			</div>
 
+			<!-- Honeypot field - invisible pour les humains, visible pour les robots -->
+			<div class="honeypot-field" aria-hidden="true">
+				<label for="website">Ne pas remplir ce champ</label>
+				<input
+					id="website"
+					type="text"
+					bind:value={honeypot}
+					tabindex="-1"
+					autocomplete="off"
+					aria-label="Ne pas remplir"
+				/>
+			</div>
+
 			<div class="form-group">
 				<label for="message">Message *</label>
 				<textarea
@@ -238,6 +265,29 @@
 				<button type="submit" class="contact-btn" disabled={loading}>
 					{loading ? 'Envoi en cours...' : 'Envoyer le message'}
 				</button>
+			</div>
+
+			<!-- Badge de protection Honeypot -->
+			<div class="honeypot-badge" title="Formulaire protégé contre les robots">
+				<svg
+					class="honeypot-icon"
+					width="18"
+					height="18"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<!-- Pot de miel -->
+					<path d="M8 6h8v10c0 2-1.5 3-4 3s-4-1-4-3V6z" />
+					<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+					<path d="M10 9h4M10 12h4" />
+					<!-- Rayons de miel -->
+					<path d="M12 6v10" />
+				</svg>
+				<span>Protégé par Honeypot</span>
 			</div>
 		</form>
 	{/if}
@@ -452,6 +502,50 @@
 
 	.form-actions {
 		margin-top: 1rem;
+	}
+
+	/* Honeypot field - invisible pour les humains */
+	.honeypot-field {
+		position: absolute;
+		left: -9999px;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	/* Badge de protection Honeypot */
+	.honeypot-badge {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		margin-top: 1.5rem;
+		padding: 0.5rem 1rem;
+		font-size: 0.75rem;
+		color: rgba(255, 255, 255, 0.5);
+		opacity: 0.7;
+		transition: opacity 0.3s ease;
+	}
+
+	.honeypot-badge:hover {
+		opacity: 1;
+	}
+
+	.honeypot-icon {
+		color: rgba(255, 215, 0, 0.6);
+		animation: pulse 2s ease-in-out infinite;
+	}
+
+	@keyframes pulse {
+		0%,
+		100% {
+			opacity: 0.6;
+		}
+		50% {
+			opacity: 1;
+		}
 	}
 
 	/* Animation */
