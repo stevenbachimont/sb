@@ -1,9 +1,18 @@
 <script>
 	import '../app.css';
+	import { onMount } from 'svelte';
 
 	let isMenuOpen = false;
 	/** @type {string | null} */
 	let activeDropdown = null;
+	let pageLoaded = false;
+
+	onMount(() => {
+		// Attendre 1 seconde puis faire le fade in
+		setTimeout(() => {
+			pageLoaded = true;
+		}, 1000);
+	});
 
 	function toggleMenu() {
 		isMenuOpen = !isMenuOpen;
@@ -25,7 +34,10 @@
 	}
 </script>
 
-<div class="container">
+<!-- Overlay noir au chargement -->
+<div class="page-loader" class:fade-out={pageLoaded}></div>
+
+<div class="container" class:fade-in={pageLoaded}>
 	<header>
 		<div class="logo">
 			<a href="/">Steven Bachimont</a>
@@ -37,7 +49,7 @@
 			<!-- Menu Web -->
 			<div class="dropdown-container">
 				<a
-					href="/wait"
+					href="/web"
 					class="nav-link"
 					on:mouseenter={() => toggleDropdown('web')}
 					on:mouseleave={closeDropdown}
@@ -52,8 +64,8 @@
 					role="menu"
 					tabindex="0"
 				>
-					<a href="/wait" on:click={() => (isMenuOpen = false)}>Portfolio Web</a>
-					<a href="/wait" on:click={() => (isMenuOpen = false)}>Outils & Technologies</a>
+					<a href="/web/portfolioWeb" on:click={() => (isMenuOpen = false)}>Portfolio Web</a>
+					<a href="/web/outils" on:click={() => (isMenuOpen = false)}>Outils & Technologies</a>
 				</div>
 			</div>
 
@@ -148,11 +160,36 @@
 </div>
 
 <style>
+	/* Overlay noir au chargement */
+	.page-loader {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: #000000;
+		z-index: 10000;
+		opacity: 1;
+		transition: opacity 0.8s ease-out;
+		pointer-events: none;
+	}
+
+	.page-loader.fade-out {
+		opacity: 0;
+		pointer-events: none;
+	}
+
 	.container {
 		min-height: 100vh;
 		display: flex;
 		flex-direction: column;
 		background-color: #000000;
+		opacity: 0;
+		transition: opacity 0.8s ease-in;
+	}
+
+	.container.fade-in {
+		opacity: 1;
 	}
 
 	header {

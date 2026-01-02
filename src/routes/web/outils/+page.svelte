@@ -12,7 +12,7 @@
 
 <section class="outils-section {isVisible ? 'fade-in' : ''}">
 	<div class="outils-header">
-		<h1>🛠️ Outils & Technologies</h1>
+		<h1>Outils & Technologies</h1>
 		<p>Découvrez les technologies et outils que j'utilise dans mes projets de développement.</p>
 	</div>
 
@@ -35,7 +35,7 @@
 					</div>
 					<div class="tech-item">
 						<span class="tech-name">TypeScript</span>
-						<span class="tech-level">Expert</span>
+						<span class="tech-level">Intermédiaire</span>
 					</div>
 				</div>
 			</div>
@@ -45,7 +45,7 @@
 				<div class="tech-list">
 					<div class="tech-item">
 						<span class="tech-name">Node.js</span>
-						<span class="tech-level">Expert</span>
+						<span class="tech-level">Avancé</span>
 					</div>
 					<div class="tech-item">
 						<span class="tech-name">Express.js</span>
@@ -53,11 +53,15 @@
 					</div>
 					<div class="tech-item">
 						<span class="tech-name">Python</span>
-						<span class="tech-level">Intermédiaire</span>
+						<span class="tech-level">Débutant</span>
 					</div>
 					<div class="tech-item">
-						<span class="tech-name">PHP</span>
-						<span class="tech-level">Intermédiaire</span>
+						<span class="tech-name">Rest</span>
+						<span class="tech-level">Débutant</span>
+					</div>
+					<div class="tech-item">
+						<span class="tech-name">Golang</span>
+						<span class="tech-level">Débutant</span>
 					</div>
 				</div>
 			</div>
@@ -66,11 +70,7 @@
 				<h3>Bases de données</h3>
 				<div class="tech-list">
 					<div class="tech-item">
-						<span class="tech-name">MongoDB</span>
-						<span class="tech-level">Avancé</span>
-					</div>
-					<div class="tech-item">
-						<span class="tech-name">PostgreSQL</span>
+						<span class="tech-name">MySQL</span>
 						<span class="tech-level">Intermédiaire</span>
 					</div>
 					<div class="tech-item">
@@ -111,6 +111,25 @@
 		min-height: 100vh;
 		background: #000000;
 		color: white;
+		opacity: 0;
+		transform: translateY(30px);
+	}
+
+	.fade-in {
+		opacity: 1;
+		transform: translateY(0);
+		animation: fadeIn 1s ease-in;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			transform: translateY(30px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 
 	.outils-header {
@@ -191,20 +210,6 @@
 		color: white;
 	}
 
-	.fade-in {
-		animation: fadeIn 1s ease-in;
-	}
-
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
 
 	@media (max-width: 768px) {
 		.outils-header h1 {

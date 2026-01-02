@@ -12,39 +12,26 @@
 
 <section class="portfolio-section {isVisible ? 'fade-in' : ''}">
 	<div class="portfolio-header">
-		<h1>🚀 Portfolio Web</h1>
+		<h1>Portfolio Web</h1>
 		<p>Découvrez mes projets de développement web et mes réalisations techniques.</p>
 	</div>
 
 	<div class="portfolio-content">
 		<div class="projects-grid">
 			<div class="project-card">
-				<h3>Site Portfolio</h3>
-				<p>Site web personnel développé avec SvelteKit, TypeScript et CSS moderne.</p>
+				<h3>Bientôt</h3>
+				<p>Je vais bientôt répertorier mes projets ici... patience</p>
 				<div class="tech-stack">
 					<span class="tech-tag">SvelteKit</span>
 					<span class="tech-tag">TypeScript</span>
 					<span class="tech-tag">CSS3</span>
-				</div>
-			</div>
-
-			<div class="project-card">
-				<h3>Applications Web</h3>
-				<p>Développement d'applications web modernes avec des frameworks JavaScript.</p>
-				<div class="tech-stack">
 					<span class="tech-tag">React</span>
 					<span class="tech-tag">Vue.js</span>
 					<span class="tech-tag">Node.js</span>
-				</div>
-			</div>
-
-			<div class="project-card">
-				<h3>APIs REST</h3>
-				<p>Conception et développement d'APIs RESTful pour des applications web.</p>
-				<div class="tech-stack">
 					<span class="tech-tag">Express.js</span>
-					<span class="tech-tag">MongoDB</span>
-					<span class="tech-tag">PostgreSQL</span>
+					<span class="tech-tag">Docker</span>
+					<span class="tech-tag">MySQL</span>
+					<span class="tech-tag">SQLite</span>
 				</div>
 			</div>
 		</div>
@@ -56,6 +43,25 @@
 		padding: 4rem 2rem;
 		min-height: 100vh;
 		background: #000000;
+		opacity: 0;
+		transform: translateY(30px);
+	}
+
+	.fade-in {
+		opacity: 1;
+		transform: translateY(0);
+		animation: fadeIn 1s ease-in;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			transform: translateY(30px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 
 	.portfolio-header {
@@ -127,20 +133,6 @@
 		font-weight: 500;
 	}
 
-	.fade-in {
-		animation: fadeIn 1s ease-in;
-	}
-
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
 
 	@media (max-width: 768px) {
 		.portfolio-header h1 {

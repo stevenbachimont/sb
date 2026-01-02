@@ -12,7 +12,7 @@
 
 <section class="web-section {isVisible ? 'fade-in' : ''}">
 	<div class="web-header">
-		<h1>💻 Développement Web</h1>
+		<h1>Développement Web</h1>
 		<p>Découvrez mes projets de développement web et les technologies que j'utilise.</p>
 	</div>
 
@@ -43,6 +43,25 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		opacity: 0;
+		transform: translateY(30px);
+	}
+
+	.fade-in {
+		opacity: 1;
+		transform: translateY(0);
+		animation: fadeIn 1s ease-in;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			transform: translateY(30px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 
 	.web-header h1 {
@@ -108,20 +127,6 @@
 		transform: translateY(-2px);
 	}
 
-	.fade-in {
-		animation: fadeIn 1s ease-in;
-	}
-
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
 
 	@media (max-width: 768px) {
 		.web-header h1 {
