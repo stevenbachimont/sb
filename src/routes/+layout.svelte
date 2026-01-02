@@ -128,7 +128,7 @@
 						</svg>
 					</a>
 					<a
-						href="www.linkedin.com/in/steven-bachimont-98964b34b"
+						href="https://www.linkedin.com/in/steven-bachimont-98964b34b"
 						target="_blank"
 						rel="noopener noreferrer"
 						aria-label="LinkedIn"
