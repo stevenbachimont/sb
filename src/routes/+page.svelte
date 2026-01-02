@@ -757,7 +757,7 @@
 					<span class="line-number">0</span>
 					<span class="line-content">
 						<span class="comment"
-							>// 🎮 Mode interactif - ESC: reprendre | Ctrl+C: copier | Ctrl+V: coller | Ctrl+A:
+							>// Mode interactif - ESC: reprendre | Ctrl+C: copier | Ctrl+V: coller | Ctrl+A:
 							sélectionner</span
 						>
 					</span>
@@ -793,33 +793,54 @@
 
 <!-- Section À propos -->
 <section id="about-section" class="about-section">
+	<h2 class="about-title-fixed">À propos</h2>
 	<div class="container">
-		<h2>À propos</h2>
 		<div class="about-content">
 			<div class="about-text">
-				<p>
-					Développeur web passionné, je crée des expériences numériques modernes et performantes.
-					Spécialisé dans les technologies frontend et backend, je transforme vos idées en solutions
-					concrètes.
-				</p>
-				<p>
-					Mon approche combine créativité et rigueur technique pour livrer des projets qui marquent
-					et qui fonctionnent parfaitement sur tous les appareils.
-				</p>
-			</div>
-			<div class="about-skills">
-				<h3>Technologies</h3>
-				<div class="skills-grid">
-					<span class="skill">JavaScript</span>
-					<span class="skill">TypeScript</span>
-					<span class="skill">Svelte</span>
-					<span class="skill">React</span>
-					<span class="skill">Node.js</span>
-					<span class="skill">CSS3</span>
-					<span class="skill">HTML5</span>
-					<span class="skill">Git</span>
+				<div class="about-intro">
+					<h3 class="about-subtitle">Développeur web & Chercheur en humanités numériques</h3>
+					<p>
+						Artiste pluridisciplinaire au parcours atypique, diplômé de l'École Nationale des Arts du Cirque de Rosny-sous-Bois (ENACR), j'ai progressivement orienté ma pratique vers le développement web et la recherche en humanités numériques.
+					</p>
+				</div>
+
+				<div class="about-section-block">
+					<h4 class="about-section-title">Entre technique et création</h4>
+					<p>
+						Spécialisé dans les technologies frontend et backend (JavaScript, TypeScript, Svelte, React, Node.js), je conçois des applications web performantes et élégantes qui transcendent les frontières entre art et technologie. Mon approche combine rigueur technique, créativité et attention aux détails pour transformer des concepts complexes en expériences numériques intuitives.
+					</p>
+				</div>
+
+				<div class="about-section-block">
+					<h4 class="about-section-title">Recherche & Développement</h4>
+					<p>
+						Mes projets de R&D explorent les nouvelles formes d'interaction entre humains et machines, à l'intersection de la création sonore, du design interactif et des arts vivants. Comment le code peut-il servir l'expression artistique ? Comment les interfaces numériques transforment-elles notre rapport au savoir et à la création ?
+					</p>
+					<p>
+						Fort d'une pratique en design sonore, scénographie et programmation, je développe des projets d'arts numériques pour artistes, chercheurs, entreprises et institutions culturelles. Cette approche pluridisciplinaire me permet de concevoir des solutions innovantes où la technique se met au service de l'émotion et de l'expérience.
+					</p>
+				</div>
+
+				<div class="about-section-block">
+					<h4 class="about-section-title">Photographie argentique</h4>
+					<p>
+						Passionné de photographie argentique, j'ai créé <strong>La Ligne Argentique</strong>, un projet nantais qui propose des balades photographiques avec des appareils de collection. Cette initiative célèbre l'art de la photographie traditionnelle et transmet les techniques argentiques aux amateurs comme aux curieux, dans une démarche de partage et de transmission du patrimoine photographique.
+					</p>
+				</div>
+
+				<div class="about-section-block">
+					<h4 class="about-section-title">Domaines d'intervention</h4>
+					<ul class="about-domains-list">
+						<li>Développement d'applications web sur mesure</li>
+						<li>Prototypage et R&D en humanités numériques</li>
+						<li>Installations interactives et expériences immersives</li>
+						<li>Design sonore et scénographie numérique</li>
+						<li>Photographie argentique et transmission des techniques traditionnelles</li>
+						<li>Collaboration avec artistes, architectes et équipes de recherche</li>
+					</ul>
 				</div>
 			</div>
+			
 		</div>
 	</div>
 </section>
@@ -1076,7 +1097,6 @@
 		overflow-wrap: break-word;
 	}
 
-	/* Responsive design parfait pour tous les écrans */
 
 	/* Ultra large screens (4K+) */
 	@media (min-width: 1920px) {
@@ -1091,7 +1111,6 @@
 			font-size: 0.95rem;
 		}
 
-		/* Message d'indication responsive pour très grands écrans */
 		.code-line:first-child .comment {
 			font-size: 0.9rem;
 			line-height: 1.4;
@@ -1116,8 +1135,8 @@
 			font-size: 0.85rem;
 			line-height: 1.3;
 		}
-		.about-section h2 {
-			font-size: 2.8rem;
+		.about-title-fixed {
+			font-size: 10rem;
 		}
 		.about-text p {
 			font-size: 1.2rem;
@@ -1142,8 +1161,8 @@
 			font-size: 0.8rem;
 			line-height: 1.3;
 		}
-		.about-section h2 {
-			font-size: 2.5rem;
+		.about-title-fixed {
+			font-size: 9rem;
 		}
 		.about-text p {
 			font-size: 1.1rem;
@@ -1168,8 +1187,8 @@
 			font-size: 0.75rem;
 			line-height: 1.2;
 		}
-		.about-section h2 {
-			font-size: 2.2rem;
+		.about-title-fixed {
+			font-size: 7rem;
 		}
 		.about-text p {
 			font-size: 1.05rem;
@@ -1219,8 +1238,8 @@
 		.about-section {
 			padding: 2.5rem 0;
 		}
-		.about-section h2 {
-			font-size: 1.8rem;
+		.about-title-fixed {
+			font-size: 3.5rem;
 		}
 		.about-text p {
 			font-size: 0.95rem;
@@ -1249,8 +1268,8 @@
 		.about-section {
 			padding: 2rem 0;
 		}
-		.about-section h2 {
-			font-size: 1.6rem;
+		.about-title-fixed {
+			font-size: 3rem;
 		}
 		.about-text p {
 			font-size: 0.9rem;
@@ -1273,8 +1292,8 @@
 		.about-section {
 			padding: 1.5rem 0;
 		}
-		.about-section h2 {
-			font-size: 1.4rem;
+		.about-title-fixed {
+			font-size: 2.5rem;
 		}
 		.about-text p {
 			font-size: 0.85rem;
@@ -1297,8 +1316,8 @@
 		.about-section {
 			padding: 1.2rem 0;
 		}
-		.about-section h2 {
-			font-size: 1.2rem;
+		.about-title-fixed {
+			font-size: 2rem;
 		}
 		.about-text p {
 			font-size: 0.8rem;
@@ -1325,8 +1344,8 @@
 		.about-section {
 			padding: 1rem 0;
 		}
-		.about-section h2 {
-			font-size: 1rem;
+		.about-title-fixed {
+			font-size: 1.5rem;
 		}
 		.about-text p {
 			font-size: 0.75rem;
@@ -1403,6 +1422,9 @@
 
 	.cursor.user-cursor {
 		background-color: #007acc00;
+		color: #f030f3;
+		margin-left: -0.5rem;
+		margin-bottom: 0.2rem;
 		animation: blink 0.8s infinite;
 	}
 
@@ -1490,141 +1512,143 @@
 		padding: 4rem 0;
 		background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 		min-height: 100vh;
-		display: flex;
-		align-items: center;
 		position: relative;
 		z-index: 10;
+		overflow: hidden;
 	}
 
 	.container {
 		max-width: 1200px;
 		margin: 0 auto;
 		padding: 0 2rem;
+		position: relative;
+		z-index: 2;
 	}
 
-	.about-section h2 {
-		font-size: 2.5rem;
+	.about-title-fixed {
+		position: sticky;
+		top: 10%;
+		transform: translateY(-50%);
+		font-size: 15rem;
+		font-family: 'Roboto', sans-serif;
 		color: #2c3e50;
-		margin-bottom: 2rem;
 		text-align: center;
 		font-weight: 700;
+		opacity: 0.1;
+		pointer-events: none;
+		z-index: 1;
+		margin: 0;
+		padding: 0;
+		line-height: 1;
+		white-space: nowrap;
+		user-select: none;
 	}
 
 	.about-content {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		gap: 3rem;
+		gap: 4rem;
 		align-items: start;
+		position: relative;
+		z-index: 2;
+	}
+
+	.about-text {
+		display: flex;
+		flex-direction: column;
+		gap: 2.5rem;
+	}
+
+	.about-intro {
+		margin-bottom: 0.5rem;
+	}
+
+	.about-subtitle {
+		font-size: 1.8rem;
+		font-weight: 700;
+		color: #2c3e50;
+		margin-bottom: 1rem;
+		line-height: 1.3;
+	}
+
+	.about-section-block {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.about-section-title {
+		font-size: 1.4rem;
+		font-weight: 600;
+		color: #2c3e50;
+		margin-bottom: 0.5rem;
+		position: relative;
+		padding-left: 1rem;
+	}
+
+	.about-section-title::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 4px;
+		height: 1.4rem;
+		background: linear-gradient(135deg, #007acc, #005a9e);
+		border-radius: 2px;
 	}
 
 	.about-text p {
 		font-size: 1.1rem;
-		line-height: 1.8;
-		color: #555;
-		margin-bottom: 1.5rem;
+		line-height: 1.9;
+		color: #444;
+		margin: 0;
+		text-align: justify;
 	}
 
-	.about-skills h3 {
-		font-size: 1.5rem;
+	.about-text p strong {
 		color: #2c3e50;
-		margin-bottom: 1.5rem;
 		font-weight: 600;
 	}
 
-	.skills-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-		gap: 1rem;
+	.about-domains-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.8rem;
 	}
 
-	.skill {
-		background: #007acc;
-		color: white;
-		padding: 0.8rem 1.2rem;
-		border-radius: 25px;
-		text-align: center;
-		font-weight: 500;
-		font-size: 0.9rem;
-		transition: all 0.3s ease;
+	.about-domains-list li {
+		font-size: 1.05rem;
+		line-height: 1.6;
+		color: #444;
+		padding-left: 1.5rem;
+		position: relative;
 	}
 
-	.skill:hover {
-		background: #005a9e;
-		transform: translateY(-2px);
-		box-shadow: 0 4px 12px rgba(0, 122, 204, 0.3);
+	.about-domains-list li::before {
+		content: '▸';
+		position: absolute;
+		left: 0;
+		color: #007acc;
+		font-weight: bold;
+		font-size: 1.2rem;
 	}
 
-	/* Responsive parfait pour la section À propos */
 
-	/* Ultra large screens (4K+) */
-	@media (min-width: 1920px) {
-		.about-section {
-			padding: 6rem 0;
-		}
-		.about-content {
-			gap: 4rem;
-		}
-		.skills-grid {
-			grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-			gap: 1.5rem;
-		}
-		.skill {
-			padding: 1rem 1.5rem;
-			font-size: 1.1rem;
-		}
-	}
-
-	/* Desktop large (1400px - 1919px) */
-	@media (min-width: 1400px) and (max-width: 1919px) {
-		.about-section {
-			padding: 5rem 0;
-		}
-		.about-content {
-			gap: 3.5rem;
-		}
-		.skills-grid {
-			grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-			gap: 1.3rem;
-		}
-		.skill {
-			padding: 0.9rem 1.3rem;
-			font-size: 1rem;
-		}
-	}
-
-	/* Desktop (1200px - 1399px) */
-	@media (min-width: 1200px) and (max-width: 1399px) {
-		.about-section {
-			padding: 4rem 0;
-		}
-		.about-content {
-			gap: 3rem;
-		}
-		.skills-grid {
-			grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-			gap: 1.2rem;
-		}
-		.skill {
-			padding: 0.8rem 1.2rem;
-			font-size: 0.95rem;
-		}
-	}
-
+	
 	/* Laptop (992px - 1199px) */
 	@media (min-width: 992px) and (max-width: 1199px) {
 		.about-section {
 			padding: 3.5rem 0;
 		}
+		.about-title-fixed {
+			font-size: 8rem;
+		}
 		.about-content {
 			gap: 2.5rem;
-		}
-		.skills-grid {
-			grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-			gap: 1rem;
-		}
-		.skill {
-			padding: 0.7rem 1.1rem;
-			font-size: 0.9rem;
 		}
 	}
 
@@ -1633,17 +1657,21 @@
 		.about-section {
 			padding: 3rem 0;
 		}
+		.about-title-fixed {
+			font-size: 6rem;
+		}
 		.about-content {
 			grid-template-columns: 1fr;
+			gap: 2.5rem;
+		}
+		.about-text {
 			gap: 2rem;
 		}
-		.skills-grid {
-			grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-			gap: 0.9rem;
+		.about-subtitle {
+			font-size: 1.6rem;
 		}
-		.skill {
-			padding: 0.6rem 1rem;
-			font-size: 0.85rem;
+		.about-section-title {
+			font-size: 1.3rem;
 		}
 	}
 
@@ -1654,6 +1682,9 @@
 			position: relative;
 			z-index: 10;
 		}
+		.about-title-fixed {
+			font-size: 4rem;
+		}
 		.container {
 			padding: 0 1.5rem;
 		}
@@ -1661,13 +1692,17 @@
 			grid-template-columns: 1fr;
 			gap: 2rem;
 		}
-		.skills-grid {
-			grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-			gap: 0.8rem;
+		.about-text {
+			gap: 1.8rem;
 		}
-		.skill {
-			padding: 0.6rem 1rem;
-			font-size: 0.8rem;
+		.about-subtitle {
+			font-size: 1.5rem;
+		}
+		.about-section-title {
+			font-size: 1.2rem;
+		}
+		.about-text p {
+			font-size: 1rem;
 		}
 	}
 
@@ -1677,6 +1712,9 @@
 			padding: 2rem 0;
 			position: relative;
 			z-index: 10;
+		}	
+		.about-title-fixed {
+			font-size: 3.5rem;
 		}
 		.container {
 			padding: 0 1rem;
@@ -1685,13 +1723,18 @@
 			grid-template-columns: 1fr;
 			gap: 1.5rem;
 		}
-		.skills-grid {
-			grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-			gap: 0.7rem;
+		.about-text {
+			gap: 1.5rem;
 		}
-		.skill {
-			padding: 0.5rem 0.8rem;
-			font-size: 0.75rem;
+		.about-subtitle {
+			font-size: 1.4rem;
+		}
+		.about-section-title {
+			font-size: 1.1rem;
+		}
+		.about-text p {
+			font-size: 0.95rem;
+			text-align: left;
 		}
 	}
 
@@ -1709,14 +1752,6 @@
 			grid-template-columns: 1fr;
 			gap: 1.2rem;
 		}
-		.skills-grid {
-			grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-			gap: 0.6rem;
-		}
-		.skill {
-			padding: 0.4rem 0.7rem;
-			font-size: 0.7rem;
-		}
 	}
 
 	/* Mobile très petit (360px - 399px) */
@@ -1733,14 +1768,6 @@
 			grid-template-columns: 1fr;
 			gap: 1rem;
 		}
-		.skills-grid {
-			grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
-			gap: 0.5rem;
-		}
-		.skill {
-			padding: 0.3rem 0.6rem;
-			font-size: 0.65rem;
-		}
 	}
 
 	/* Mobile minimal (< 360px) */
@@ -1756,14 +1783,6 @@
 		.about-content {
 			grid-template-columns: 1fr;
 			gap: 0.8rem;
-		}
-		.skills-grid {
-			grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-			gap: 0.4rem;
-		}
-		.skill {
-			padding: 0.25rem 0.5rem;
-			font-size: 0.6rem;
 		}
 	}
 
