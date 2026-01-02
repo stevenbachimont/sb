@@ -102,12 +102,7 @@
 			<div class="footer-section">
 				<h3>Partenaires</h3>
 				<div class="partners">
-					<div class="partner">
-						<h4>Paiements</h4>
-						<div class="partner-logos">
-							<span class="partner-logo">Stripe</span>
-						</div>
-					</div>
+					
 				</div>
 			</div>
 
@@ -118,7 +113,6 @@
 					<a href="/contact" class="contact-link">
 						<p>Contact</p>
 					</a>
-					<a href="https://stevenbachimont.com" target="_blank" rel="noopener noreferrer">🌐 stevenbachimont.com</a>
 				</div>
 				<div class="social-links">
 					<a
@@ -152,8 +146,8 @@
 		<!-- Copyright -->
 		<div class="footer-bottom">
 			<div class="footer-bottom-content">
-				<p>© 2025 - Steven Bachimont. Tous droits réservés.</p>
-				<p>Photographe & Développeur Web</p>
+				<p>© 2026 - Steven Bachimont. Tous droits réservés.</p>
+				<p>Photographe & Développeur Web et bien plus encore...</p>
 			</div>
 		</div>
 	</footer>
