@@ -28,10 +28,15 @@
 	let rootEl: HTMLDivElement;
 	let mirrorElements: Element[] = [];
 	let isMobileMotion = false;
-	let motionHint: 'idle' | 'need-tap' | 'active' | 'denied' | 'unsupported' = 'idle';
+	let menuOpen = false;
 
-	/** Activé dans onMount — appelé par le hint iOS (geste utilisateur requis) */
-	let enableMotionFromGesture = async (_event?: Event) => {};
+	function toggleMenu() {
+		menuOpen = !menuOpen;
+	}
+
+	function closeMenu() {
+		menuOpen = false;
+	}
 
 	onMount(() => {
 		const banner = rootEl.querySelector('.banner') as HTMLElement;
@@ -204,7 +209,6 @@
 		isMobileMotion = prefersMotionPointer();
 		if (isMobileMotion) {
 			rootEl.classList.add('is-mobile-motion');
-			motionHint = orientationSupported() ? 'need-tap' : 'unsupported';
 		}
 
 		const onBannerMove = (e: MouseEvent) => {
@@ -223,7 +227,6 @@
 					animateMirror(clientX, movementX);
 				}
 			});
-			motionHint = 'active';
 			gsap.to(rootEl.querySelectorAll('.wonderland-full'), {
 				alpha: 0,
 				ease: 'sine.in',
@@ -231,19 +234,12 @@
 			});
 		};
 
-		enableMotionFromGesture = async (_event?: Event) => {
+		const enableMotionFromGesture = async () => {
 			if (!isMobileMotion || motionStarted) return;
-			if (!orientationSupported()) {
-				motionHint = 'unsupported';
-				return;
-			}
+			if (!orientationSupported()) return;
 			const state = await requestOrientationPermission();
 			if (state === 'granted') {
 				startMotionTracking();
-			} else if (state === 'unsupported') {
-				motionHint = 'unsupported';
-			} else {
-				motionHint = 'denied';
 			}
 		};
 
@@ -429,18 +425,25 @@
 
 <div class="mirror-hero-root" class:is-mobile-motion={isMobileMotion} bind:this={rootEl}>
 	<header class="header">
-		<a href="/" class="header-brand">
+		<a href="/" class="header-brand" on:click={closeMenu}>
 			<h1 class="header-title">Steven Bachimont</h1>
 		</a>
-		<div class="header-menu">
-			<a href="/#about-section" class="header-item">about</a>
-			<a href="/web" class="header-item">works</a>
-			<a href="/contact" class="header-item">contact</a>
-		</div>
-		<a href="/web" class="header-burger" aria-label="Menu">
+		<nav class="header-menu" class:is-open={menuOpen} aria-label="Navigation principale">
+			<a href="/#about-section" class="header-item" on:click={closeMenu}>about</a>
+			<a href="/web" class="header-item" on:click={closeMenu}>works</a>
+			<a href="/contact" class="header-item" on:click={closeMenu}>contact</a>
+		</nav>
+		<button
+			type="button"
+			class="header-burger"
+			class:is-open={menuOpen}
+			aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+			aria-expanded={menuOpen}
+			on:click={toggleMenu}
+		>
 			<span></span>
 			<span></span>
-		</a>
+		</button>
 	</header>
 
 	<div class="main">
@@ -449,23 +452,6 @@
 				<section id="hero" class="hero">
 					<div class="wonderland">
 						<button class="wonderland-full" type="button" tabindex="-1" aria-hidden="true"></button>
-						{#if isMobileMotion && motionHint !== 'active'}
-							<button
-								class="motion-hint"
-								type="button"
-								on:click|stopPropagation={enableMotionFromGesture}
-							>
-								{#if motionHint === 'denied'}
-									<span class="motion-hint__label">Mouvement refusé</span>
-									<span class="motion-hint__sub">Autorisez l’orientation dans Réglages</span>
-								{:else if motionHint === 'unsupported'}
-									<span class="motion-hint__label">Touchez pour explorer</span>
-								{:else}
-									<span class="motion-hint__label">Touchez, puis inclinez</span>
-									<span class="motion-hint__sub">Le téléphone pilote le miroir</span>
-								{/if}
-							</button>
-						{/if}
 					</div>
 
 					<div class="banner mirror-wrapp">
@@ -570,9 +556,10 @@
 							</div>
 						</div>
 						<div class="banner-info">
-							<div class="banner-title">Photo.code_dev</div>
+							<div class="banner-title banner-title--desk">Photo.code_dev</div>
 							<div class="banner-left">
 								<img src={PHOTO} alt="" />
+								<div class="banner-title banner-title--mobile">Photo.code_dev</div>
 								<div class="banner-social">
 									<a
 										href="https://github.com/stevenbachimont"

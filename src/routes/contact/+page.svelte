@@ -303,14 +303,14 @@
 	.contact-section {
 		max-width: 9.5rem;
 		margin: 0 auto;
-		padding: 0.8rem 0.3rem 1.2rem;
+		padding: 1.1rem 0.3rem 1.2rem;
 		text-align: left;
 		opacity: 0;
 		transform: translateY(0.15rem);
 		font-family: var(--main-font);
 		color: #fff;
 		background: #000;
-		min-height: 100vh;
+		min-height: 100dvh;
 	}
 
 	.contact-section.fade-in {
@@ -385,7 +385,7 @@
 		padding: 0.07rem 0.1rem;
 		border-radius: 0;
 		border: 1px solid rgba(255, 255, 255, 0.35);
-		font-size: 0.14rem;
+		font-size: max(16px, 0.14rem);
 		line-height: 1.35;
 		font-family: var(--main-font);
 		background: transparent;
@@ -535,10 +535,14 @@
 
 	.honeypot-field {
 		position: absolute;
-		left: -9999px;
 		width: 1px;
 		height: 1px;
+		padding: 0;
+		margin: -1px;
 		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
 		opacity: 0;
 		pointer-events: none;
 	}
@@ -553,18 +557,29 @@
 	}
 
 	.honeypot-icon {
+		width: 18px;
+		height: 18px;
+		flex-shrink: 0;
 		color: rgba(255, 255, 255, 0.4);
 	}
 
-	@media (max-width: 700px) {
+	@media (max-width: 768px) {
+		.contact-section {
+			padding: 1.2rem 0.22rem 1.4rem;
+		}
+
 		.contact-layout {
 			grid-template-columns: 1fr;
 			gap: 0.35rem;
 		}
 
 		.contact-layout__media {
-			max-width: 2.2rem;
+			max-width: min(2.2rem, 70vw);
 			justify-self: start;
+		}
+
+		.contact-form {
+			max-width: none;
 		}
 
 		.form-grid {
