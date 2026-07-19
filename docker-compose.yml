@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   sb:
     build:
@@ -17,7 +15,10 @@ services:
     networks:
       - portfolio-network
 
+  # Optionnel : activer avec `docker compose --profile edge up -d`
+  # Si le VPS a déjà un nginx/Caddy sur 80/443, ne pas démarrer ce service.
   nginx:
+    profiles: ['edge']
     image: nginx:alpine
     ports:
       - '80:80'

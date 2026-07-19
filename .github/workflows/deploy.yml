@@ -57,6 +57,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: 22
           script_stop: true
+          command_timeout: 15m
           script: |
             set -euo pipefail
             cd /root/sb
@@ -78,16 +79,39 @@ jobs:
               exit 1
             fi
 
-            echo "🛑 Arrêt des conteneurs..."
-            docker compose down || docker-compose down
+            # Uniquement Docker Compose V2 (pas de fallback docker-compose v1 / API 1.43)
+            if ! docker compose version >/dev/null 2>&1; then
+              echo "❌ docker compose (V2) introuvable sur le VPS"
+              exit 1
+            fi
 
-            echo "🔨 Build sans cache + redémarrage..."
-            docker compose build --no-cache || docker-compose build --no-cache
-            docker compose up -d || docker-compose up -d
+            echo "🛑 Arrêt des conteneurs du projet..."
+            docker compose --profile edge down --remove-orphans
+
+            echo "🔨 Build sans cache (service sb)..."
+            docker compose build --no-cache sb
+
+            echo "🚀 Redémarrage de l'app (port 3000)..."
+            docker compose up -d sb
+
+            # nginx Docker seulement si 80/443 sont libres (sinon proxy hôte déjà en place)
+            if command -v ss >/dev/null 2>&1; then
+              PORT80_BUSY="$(ss -ltn | awk '$4 ~ /:80$/ { print 1; exit }')"
+            else
+              PORT80_BUSY="$(netstat -ltn 2>/dev/null | awk '$4 ~ /:80$/ { print 1; exit }' || true)"
+            fi
+
+            if [ "${PORT80_BUSY:-}" = "1" ]; then
+              echo "ℹ️ Port 80 déjà utilisé — nginx Docker ignoré (proxy hôte)"
+            else
+              echo "🌐 Ports libres — démarrage nginx Docker (profile edge)..."
+              docker compose --profile edge up -d nginx
+            fi
 
             echo "🔍 Vérification..."
-            sleep 10
-            docker compose ps || docker-compose ps
+            sleep 8
+            docker compose ps
+            docker compose ps --status running --services | grep -qx sb
 
             echo "🧹 Nettoyage images dangling..."
             docker image prune -f
