@@ -163,138 +163,145 @@
 		</p>
 	</div>
 
-	{#if sent}
-		<div class="success-container">
-			<div class="success-message">
-				<h3>Message envoyé</h3>
-				<p>Je vous recontacterai dans les plus brefs délais.</p>
-				<p><strong>Merci de votre message !</strong></p>
-				<button class="btn-reset" on:click={resetForm}> Envoyer un autre message </button>
-			</div>
-		</div>
-	{:else}
-		<form class="contact-form" on:submit={handleSubmit}>
-			<div class="form-grid">
-				<div class="form-group">
-					<label for="prenom">Prénom *</label>
-					<input
-						id="prenom"
-						type="text"
-						bind:value={prenom}
-						required
-						placeholder="Votre prénom"
-						class={errors.prenom ? 'error' : ''}
-					/>
-					{#if errors.prenom}
-						<span class="error-text">{errors.prenom}</span>
+	<div class="contact-layout">
+		<div class="contact-layout__main">
+			{#if sent}
+				<div class="success-container">
+					<div class="success-message">
+						<h3>Message envoyé</h3>
+						<p>Je vous recontacterai dans les plus brefs délais.</p>
+						<p><strong>Merci de votre message !</strong></p>
+						<button class="btn-reset" on:click={resetForm}> Envoyer un autre message </button>
+					</div>
+				</div>
+			{:else}
+				<form class="contact-form" on:submit={handleSubmit}>
+					<div class="form-grid">
+						<div class="form-group">
+							<label for="prenom">Prénom *</label>
+							<input
+								id="prenom"
+								type="text"
+								bind:value={prenom}
+								required
+								placeholder="Votre prénom"
+								class={errors.prenom ? 'error' : ''}
+							/>
+							{#if errors.prenom}
+								<span class="error-text">{errors.prenom}</span>
+							{/if}
+						</div>
+
+						<div class="form-group">
+							<label for="nom">Nom *</label>
+							<input
+								id="nom"
+								type="text"
+								bind:value={nom}
+								required
+								placeholder="Votre nom"
+								class={errors.nom ? 'error' : ''}
+							/>
+							{#if errors.nom}
+								<span class="error-text">{errors.nom}</span>
+							{/if}
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="email">Email *</label>
+						<input
+							id="email"
+							type="email"
+							bind:value={email}
+							required
+							placeholder="votre.email@exemple.com"
+							class={errors.email ? 'error' : ''}
+						/>
+						{#if errors.email}
+							<span class="error-text">{errors.email}</span>
+						{/if}
+					</div>
+
+					<!-- Honeypot field - invisible pour les humains, visible pour les robots -->
+					<div class="honeypot-field" aria-hidden="true">
+						<label for="website">Ne pas remplir ce champ</label>
+						<input
+							id="website"
+							type="text"
+							bind:value={honeypot}
+							tabindex="-1"
+							autocomplete="off"
+							aria-label="Ne pas remplir"
+						/>
+					</div>
+
+					<div class="form-group">
+						<label for="message">Message *</label>
+						<textarea
+							id="message"
+							rows="4"
+							bind:value={message}
+							required
+							placeholder="Décrivez votre projet, votre demande ou posez vos questions..."
+							class={errors.message ? 'error' : ''}
+						></textarea>
+						<div class="message-info">
+							{#if errors.message}
+								<span class="error-text">{errors.message}</span>
+							{:else}
+								<span class="char-count">{message.length}/1000 caractères</span>
+							{/if}
+						</div>
+					</div>
+
+					{#if error}
+						<div class="error-message">
+							<h4>❌ Erreur</h4>
+							<p>{error}</p>
+						</div>
 					{/if}
-				</div>
 
-				<div class="form-group">
-					<label for="nom">Nom *</label>
-					<input
-						id="nom"
-						type="text"
-						bind:value={nom}
-						required
-						placeholder="Votre nom"
-						class={errors.nom ? 'error' : ''}
-					/>
-					{#if errors.nom}
-						<span class="error-text">{errors.nom}</span>
-					{/if}
-				</div>
-			</div>
-
-			<div class="form-group">
-				<label for="email">Email *</label>
-				<input
-					id="email"
-					type="email"
-					bind:value={email}
-					required
-					placeholder="votre.email@exemple.com"
-					class={errors.email ? 'error' : ''}
-				/>
-				{#if errors.email}
-					<span class="error-text">{errors.email}</span>
-				{/if}
-			</div>
-
-			<!-- Honeypot field - invisible pour les humains, visible pour les robots -->
-			<div class="honeypot-field" aria-hidden="true">
-				<label for="website">Ne pas remplir ce champ</label>
-				<input
-					id="website"
-					type="text"
-					bind:value={honeypot}
-					tabindex="-1"
-					autocomplete="off"
-					aria-label="Ne pas remplir"
-				/>
-			</div>
-
-			<div class="form-group">
-				<label for="message">Message *</label>
-				<textarea
-					id="message"
-					rows="5"
-					bind:value={message}
-					required
-					placeholder="Décrivez votre projet, votre demande ou posez vos questions..."
-					class={errors.message ? 'error' : ''}
-				></textarea>
-				<div class="message-info">
-					{#if errors.message}
-						<span class="error-text">{errors.message}</span>
-					{:else}
-						<span class="char-count">{message.length}/1000 caractères</span>
-					{/if}
-				</div>
-			</div>
-
-			{#if error}
-				<div class="error-message">
-					<h4>❌ Erreur</h4>
-					<p>{error}</p>
-				</div>
+					<div class="form-actions">
+						<button type="submit" class="contact-btn" disabled={loading}>
+							{loading ? 'Envoi en cours...' : 'Envoyer le message'}
+						</button>
+						<div class="honeypot-badge" title="Formulaire protégé contre les robots">
+							<svg
+								class="honeypot-icon"
+								width="18"
+								height="18"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="1.5"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<path d="M8 6h8v10c0 2-1.5 3-4 3s-4-1-4-3V6z" />
+								<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+								<path d="M10 9h4M10 12h4" />
+								<path d="M12 6v10" />
+							</svg>
+							<span>Protégé par Honeypot</span>
+						</div>
+					</div>
+				</form>
 			{/if}
+		</div>
 
-			<div class="form-actions">
-				<button type="submit" class="contact-btn" disabled={loading}>
-					{loading ? 'Envoi en cours...' : 'Envoyer le message'}
-				</button>
-			</div>
-
-			<!-- Badge de protection Honeypot -->
-			<div class="honeypot-badge" title="Formulaire protégé contre les robots">
-				<svg
-					class="honeypot-icon"
-					width="18"
-					height="18"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="1.5"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				>
-					<!-- Pot de miel -->
-					<path d="M8 6h8v10c0 2-1.5 3-4 3s-4-1-4-3V6z" />
-					<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-					<path d="M10 9h4M10 12h4" />
-					<!-- Rayons de miel -->
-					<path d="M12 6v10" />
-				</svg>
-				<span>Protégé par Honeypot</span>
-			</div>
-		</form>
-	{/if}
+		<figure class="contact-layout__media">
+			<img
+				src="/background/contact.jpg"
+				alt="Portrait en noir et blanc d’un homme barbu au chapeau, souriant"
+			/>
+		</figure>
+	</div>
 </section>
 
 <style>
 	.contact-section {
-		max-width: 7rem;
+		max-width: 9.5rem;
 		margin: 0 auto;
 		padding: 0.8rem 0.3rem 1.2rem;
 		text-align: left;
@@ -318,41 +325,68 @@
 		margin-bottom: 0.4rem;
 	}
 
+	.contact-layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.55fr);
+		gap: 0.5rem;
+		align-items: start;
+	}
+
+	.contact-layout__main {
+		min-width: 0;
+	}
+
+	.contact-layout__media {
+		margin: 0;
+		width: 100%;
+		max-width: 2.4rem;
+		justify-self: end;
+	}
+
+	.contact-layout__media img {
+		display: block;
+		width: 100%;
+		height: auto;
+		object-fit: contain;
+	}
+
 	.contact-form {
 		display: flex;
 		flex-direction: column;
-		gap: 0.22rem;
+		gap: 0.16rem;
 		align-items: stretch;
-		max-width: 5.5rem;
+		max-width: 4.2rem;
 	}
 
 	.form-grid {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		gap: 0.22rem;
+		gap: 0.16rem;
 	}
 
 	.form-group {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		gap: 0.08rem;
+		gap: 0.05rem;
 	}
 
 	label {
 		color: #fff;
 		font-weight: 400;
-		font-size: 0.12rem;
+		font-size: 0.11rem;
 		text-transform: uppercase;
+		letter-spacing: 0.02em;
 	}
 
 	input,
 	textarea {
 		width: 100%;
-		padding: 0.12rem 0.14rem;
+		padding: 0.07rem 0.1rem;
 		border-radius: 0;
 		border: 1px solid rgba(255, 255, 255, 0.35);
 		font-size: 0.14rem;
+		line-height: 1.35;
 		font-family: var(--main-font);
 		background: transparent;
 		color: #fff;
@@ -379,7 +413,8 @@
 
 	textarea {
 		resize: vertical;
-		min-height: 1.2rem;
+		min-height: 0.7rem;
+		padding-top: 0.08rem;
 	}
 
 	.message-info {
@@ -400,9 +435,8 @@
 	}
 
 	.contact-btn {
-		align-self: flex-start;
-		padding: 0.14rem 0.35rem;
-		font-size: 0.14rem;
+		padding: 0.08rem 0.22rem;
+		font-size: 0.13rem;
 		font-family: var(--main-font);
 		text-transform: uppercase;
 		color: #fff;
@@ -410,7 +444,6 @@
 		border: 1px solid #fff;
 		border-radius: 0;
 		cursor: pointer;
-		margin-top: 0.1rem;
 	}
 
 	.contact-btn:hover:not(:disabled) {
@@ -493,6 +526,10 @@
 	}
 
 	.form-actions {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.16rem 0.22rem;
 		margin-top: 0.1rem;
 	}
 
@@ -509,8 +546,7 @@
 	.honeypot-badge {
 		display: flex;
 		align-items: center;
-		gap: 0.1rem;
-		margin-top: 0.25rem;
+		gap: 0.08rem;
 		font-size: 0.11rem;
 		color: rgba(255, 255, 255, 0.4);
 		text-transform: uppercase;
@@ -521,6 +557,16 @@
 	}
 
 	@media (max-width: 700px) {
+		.contact-layout {
+			grid-template-columns: 1fr;
+			gap: 0.35rem;
+		}
+
+		.contact-layout__media {
+			max-width: 2.2rem;
+			justify-self: start;
+		}
+
 		.form-grid {
 			grid-template-columns: 1fr;
 		}

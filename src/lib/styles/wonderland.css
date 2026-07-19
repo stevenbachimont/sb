@@ -113,8 +113,9 @@ textarea {
   box-shadow: inset 0 0 0 150px rgba(255, 255, 255, 0) !important;
   -webkit-box-shadow: inset 0 0 0 150px rgba(255, 255, 255, 0) !important;
   -webkit-text-fill-color: currentColor !important;
-  font-size: 1rem;
-  line-height: 1.5rem;
+  /* rem = ~100px on desktop — keep form type at body scale */
+  font-size: 0.14rem;
+  line-height: 1.35;
   background-color: transparent;
 }
 
@@ -555,6 +556,14 @@ html.has-site-cursor * {
 
   .about-wonder {
     padding: 0.85rem 0.22rem 1.2rem;
+  }
+  .about-wonder__layout {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+  .about-wonder__media {
+    position: static;
+    max-width: 4.5rem;
   }
   .about-wonder__title {
     font-size: 0.52rem;
@@ -1413,6 +1422,26 @@ html.has-site-cursor * {
   color: var(--white);
   padding: 1rem 0.3rem 1.5rem;
   font-family: var(--main-font);
+}
+.about-wonder__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  gap: 0.5rem;
+  align-items: start;
+}
+.about-wonder__content {
+  min-width: 0;
+}
+.about-wonder__media {
+  margin: 0;
+  position: sticky;
+  top: 0.4rem;
+}
+.about-wonder__media-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 .about-wonder__title {
   font-size: 0.9rem;

@@ -14,7 +14,7 @@
 		orientationSupported
 	} from '$lib/utils/deviceMotion';
 
-	const PHOTO = 'https://laligneargentique.fr/api/galerie/file/5';
+	const PHOTO = '/background/moi.jpg';
 	const TILE_COUNT = 6;
 	const HARDNESS: Array<'soft' | 'medium' | 'hard'> = [
 		'soft',
