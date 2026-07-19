@@ -873,11 +873,16 @@ html.has-site-cursor * {
 
 /* Mobile hero chrome — AFTER desktop banner rules so it actually wins */
 @media (max-width: 768px) {
+  .mirror-hero-root .banner {
+    overflow: hidden;
+  }
+
   .mirror-hero-root .banner-info {
     bottom: calc(0.28rem + env(safe-area-inset-bottom, 0px));
     padding: 0 0.22rem;
     justify-content: space-between;
     align-items: flex-end;
+    overflow: hidden;
   }
 
   .mirror-hero-root .banner-title--desk {
@@ -905,12 +910,22 @@ html.has-site-cursor * {
     flex-shrink: 0;
     margin: 0;
     margin-left: auto;
+    margin-bottom: 0;
+    /* Plus bas que 100% pour ne plus dépasser avant l’ouverture */
+    -webkit-transform: translateY(calc(100% + 0.55rem));
+    transform: translateY(calc(100% + 0.55rem));
   }
 
   .mirror-hero-root .banner-left img {
     width: 100%;
     height: auto;
     display: block;
+  }
+
+  .mirror-hero-root .hero.full .banner-left {
+    margin-bottom: 0;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
   }
 
   .mirror-hero-root .hero.full .banner-title--desk {
@@ -1588,7 +1603,7 @@ html.has-site-cursor * {
     position: static !important;
     top: auto !important;
     max-width: min(4.5rem, 92vw);
-    margin-top: 40%;
+    margin-top: 0;
   }
   .about-wonder__title {
     font-size: 0.52rem;

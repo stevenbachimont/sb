@@ -2,17 +2,12 @@
 	/**
 	 * Port ultra-fidèle de Desktop/test (Wonderland mirror + GSAP)
 	 * + code asynchrone par tuile (CodeTile)
-	 * + mobile : inclinaison du téléphone à la place de la souris
+	 * + mobile : mouvement au doigt (pas de gyro)
 	 */
 	import { onMount } from 'svelte';
 	import gsap from 'gsap';
 	import CodeTile from '$lib/components/CodeTile.svelte';
-	import {
-		prefersMotionPointer,
-		requestOrientationPermission,
-		subscribeDeviceMotion,
-		orientationSupported
-	} from '$lib/utils/deviceMotion';
+	import { prefersMotionPointer } from '$lib/utils/deviceMotion';
 
 	const PHOTO = '/background/moi.jpg';
 	const TILE_COUNT = 6;
@@ -218,10 +213,10 @@
 			img.addEventListener('load', setWidthMirror);
 		});
 
-		/** Interaction miroir : souris (desktop) ou inclinaison (mobile) */
+		/** Interaction miroir : souris (desktop) ou doigt (mobile) */
 		let hoveringBanner = false;
-		let stopMotion: (() => void) | null = null;
-		let motionStarted = false;
+		let lastTouchX = 0;
+		let touchDragged = false;
 		isMobileMotion = prefersMotionPointer();
 		if (isMobileMotion) {
 			rootEl.classList.add('is-mobile-motion');
@@ -234,41 +229,24 @@
 			}
 		};
 
-		const startMotionTracking = () => {
-			if (motionStarted || !isMobileMotion) return;
-			motionStarted = true;
-			try {
-				stopMotion = subscribeDeviceMotion(({ xNorm, movementX }) => {
-					/* Uniquement hero ouvert — sinon flood GSAP et crash mobile */
-					if (!banner.classList.contains('active')) return;
-					const clientX = xNorm * window.innerWidth;
-					try {
-						animateMirror(clientX, movementX);
-					} catch {
-						/* ignore frame errors */
-					}
-				});
-			} catch {
-				motionStarted = false;
-				return;
-			}
-			gsap.to(rootEl.querySelectorAll('.wonderland-full'), {
-				alpha: 0,
-				ease: 'sine.in',
-				duration: 0.4
-			});
+		const onTouchStart = (e: TouchEvent) => {
+			touchDragged = false;
+			if (!e.touches[0]) return;
+			lastTouchX = e.touches[0].clientX;
 		};
 
-		const enableMotionFromGesture = async () => {
-			if (!isMobileMotion || motionStarted) return;
-			if (!orientationSupported()) return;
+		const onTouchMove = (e: TouchEvent) => {
+			if (!isMobileMotion || !banner.classList.contains('active')) return;
+			const touch = e.touches[0];
+			if (!touch) return;
+			const clientX = touch.clientX;
+			const movementX = clientX - lastTouchX;
+			if (Math.abs(movementX) > 6) touchDragged = true;
+			lastTouchX = clientX;
 			try {
-				const state = await requestOrientationPermission();
-				if (state === 'granted') {
-					startMotionTracking();
-				}
+				animateMirror(clientX, movementX);
 			} catch {
-				/* permission / API crash — on ignore le gyro */
+				/* ignore frame errors */
 			}
 		};
 
@@ -375,8 +353,8 @@
 				.to(
 					rootEl.querySelectorAll('.wonderland-full'),
 					{
-						scaleY: isMobileMotion && motionStarted ? 0 : 1,
-						alpha: isMobileMotion && motionStarted ? 0 : 1,
+						scaleY: 1,
+						alpha: 1,
 						ease: 'sine.in',
 						transformOrigin: 'top',
 						duration: 0.5
@@ -403,12 +381,16 @@
 				);
 		};
 
-		const onBannerClick = async () => {
+		const onBannerClick = () => {
+			/* Un glissement ne doit pas fermer / rouvrir le hero */
+			if (isMobileMotion && touchDragged) {
+				touchDragged = false;
+				return;
+			}
 			if (hero.classList.contains('full')) {
 				collapseHero();
 				return;
 			}
-			await enableMotionFromGesture();
 			expandHero();
 		};
 
@@ -440,6 +422,8 @@
 		banner.addEventListener('mouseenter', onEnter);
 		banner.addEventListener('mouseleave', onLeave);
 		banner.addEventListener('mousemove', onBannerMove, true);
+		banner.addEventListener('touchstart', onTouchStart, { passive: true });
+		banner.addEventListener('touchmove', onTouchMove, { passive: true });
 
 		return () => {
 			window.removeEventListener('resize', setWidthMirror);
@@ -447,7 +431,8 @@
 			banner.removeEventListener('mouseenter', onEnter);
 			banner.removeEventListener('mouseleave', onLeave);
 			banner.removeEventListener('mousemove', onBannerMove, true);
-			stopMotion?.();
+			banner.removeEventListener('touchstart', onTouchStart);
+			banner.removeEventListener('touchmove', onTouchMove);
 			try {
 				mirrorTween?.kill();
 			} catch {
