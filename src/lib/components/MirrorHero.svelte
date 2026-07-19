@@ -60,18 +60,28 @@
 		const codeBase = () => rootEl.querySelectorAll('.banner-code-layer--base');
 		const photoEls = () => rootEl.querySelectorAll('.banner-img img, .mirror img');
 
+		let mirrorTween: gsap.core.Timeline | null = null;
+
 		function animateMirror(clientX: number, movementX: number) {
+			if (!Number.isFinite(clientX) || !Number.isFinite(movementX)) return;
+			const width = window.innerWidth || 1;
 			const procentLight = Math.min(
-				Math.max((Math.floor((clientX / window.innerWidth) * 100) - 20) * 2, 0) - 100,
+				Math.max((Math.floor((clientX / width) * 100) - 20) * 2, 0) - 100,
 				0
 			);
-			const t = clientX / window.innerWidth;
+			const t = Math.min(Math.max(clientX / width, 0), 1);
 			const codeAlpha = 0.55 + Math.sin(t * Math.PI) * 0.4;
 			const photoAlpha = 0.45 + (1 - codeAlpha) * 0.55;
 			const dir = movementX < 0 ? -1 : 1;
 
-			gsap
-				.timeline({ defaults: { ease: 'power1.out' } })
+			try {
+				mirrorTween?.kill();
+			} catch {
+				/* ignore */
+			}
+
+			mirrorTween = gsap
+				.timeline({ defaults: { ease: 'power1.out', overwrite: 'auto' } })
 				.to(overs(), {
 					duration: 1,
 					x: clientX / 7,
@@ -227,12 +237,21 @@
 		const startMotionTracking = () => {
 			if (motionStarted || !isMobileMotion) return;
 			motionStarted = true;
-			stopMotion = subscribeDeviceMotion(({ xNorm, movementX }) => {
-				const clientX = xNorm * window.innerWidth;
-				if (hoveringBanner || banner.classList.contains('active') || isMobileMotion) {
-					animateMirror(clientX, movementX);
-				}
-			});
+			try {
+				stopMotion = subscribeDeviceMotion(({ xNorm, movementX }) => {
+					/* Uniquement hero ouvert — sinon flood GSAP et crash mobile */
+					if (!banner.classList.contains('active')) return;
+					const clientX = xNorm * window.innerWidth;
+					try {
+						animateMirror(clientX, movementX);
+					} catch {
+						/* ignore frame errors */
+					}
+				});
+			} catch {
+				motionStarted = false;
+				return;
+			}
 			gsap.to(rootEl.querySelectorAll('.wonderland-full'), {
 				alpha: 0,
 				ease: 'sine.in',
@@ -243,9 +262,13 @@
 		const enableMotionFromGesture = async () => {
 			if (!isMobileMotion || motionStarted) return;
 			if (!orientationSupported()) return;
-			const state = await requestOrientationPermission();
-			if (state === 'granted') {
-				startMotionTracking();
+			try {
+				const state = await requestOrientationPermission();
+				if (state === 'granted') {
+					startMotionTracking();
+				}
+			} catch {
+				/* permission / API crash — on ignore le gyro */
 			}
 		};
 
@@ -425,6 +448,11 @@
 			banner.removeEventListener('mouseleave', onLeave);
 			banner.removeEventListener('mousemove', onBannerMove, true);
 			stopMotion?.();
+			try {
+				mirrorTween?.kill();
+			} catch {
+				/* ignore */
+			}
 		};
 	});
 </script>
