@@ -600,38 +600,6 @@ html.has-site-cursor * {
     max-width: none;
   }
 
-  .about-wonder {
-    padding: 0.85rem 0.22rem 1.2rem;
-  }
-  .about-wonder__layout {
-    grid-template-columns: 1fr;
-    gap: 0.4rem;
-  }
-  .about-wonder__media {
-    position: static;
-    max-width: min(4.5rem, 92vw);
-  }
-
-  .about-wonder__title {
-    font-size: 0.52rem;
-    opacity: 0.35;
-  }
-  .about-wonder__subtitle {
-    font-size: 0.22rem;
-    line-height: 1.15;
-    margin-bottom: 0.3rem;
-  }
-  .about-wonder p,
-  .about-wonder li {
-    font-size: 0.16rem;
-    line-height: 1.5;
-    max-width: none;
-  }
-  .about-wonder h4 {
-    font-size: 0.18rem;
-    margin-top: 0.45rem;
-  }
-
   .site-footer {
     flex-direction: column;
     align-items: flex-start;
@@ -1605,6 +1573,42 @@ html.has-site-cursor * {
 .about-wonder strong {
   font-weight: 400;
   opacity: 1;
+}
+
+/* Mobile about — after desktop rules so sticky/position don't win */
+@media (max-width: 768px) {
+  .about-wonder {
+    padding: 0.85rem 0.22rem 1.2rem;
+  }
+  .about-wonder__layout {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+  .about-wonder__media {
+    position: static !important;
+    top: auto !important;
+    max-width: min(4.5rem, 92vw);
+    margin-top: 40%;
+  }
+  .about-wonder__title {
+    font-size: 0.52rem;
+    opacity: 0.35;
+  }
+  .about-wonder__subtitle {
+    font-size: 0.22rem;
+    line-height: 1.15;
+    margin-bottom: 0.3rem;
+  }
+  .about-wonder p,
+  .about-wonder li {
+    font-size: 0.16rem;
+    line-height: 1.5;
+    max-width: none;
+  }
+  .about-wonder h4 {
+    font-size: 0.18rem;
+    margin-top: 0.45rem;
+  }
 }
 
 .site-footer {

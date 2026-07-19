@@ -63,21 +63,30 @@ export function subscribeDeviceMotion(
 	const flush = () => {
 		raf = 0;
 		if (!pending) return;
-		onSample(pending);
+		try {
+			onSample(pending);
+		} catch {
+			/* ignore callback errors */
+		}
 		pending = null;
 	};
 
 	const onOrientation = (e: DeviceOrientationEvent) => {
-		const gamma = e.gamma ?? 0;
-		const beta = e.beta ?? 0;
-		/* beta centré autour de ~45° (téléphone tenu devant soi) */
-		const betaOffset = clamp((beta - 45) / 50, -1, 1);
-		const tilt = clamp(gamma / range + betaOffset * 0.18, -1, 1);
-		const xNorm = clamp((tilt + 1) / 2, 0, 1);
-		const movementX = (xNorm - lastXNorm) * (typeof window !== 'undefined' ? window.innerWidth : 1);
-		lastXNorm = xNorm;
-		pending = { xNorm, movementX };
-		if (!raf) raf = requestAnimationFrame(flush);
+		try {
+			const gamma = typeof e.gamma === 'number' ? e.gamma : 0;
+			const beta = typeof e.beta === 'number' ? e.beta : 0;
+			/* beta centré autour de ~45° (téléphone tenu devant soi) */
+			const betaOffset = clamp((beta - 45) / 50, -1, 1);
+			const tilt = clamp(gamma / range + betaOffset * 0.18, -1, 1);
+			const xNorm = clamp((tilt + 1) / 2, 0, 1);
+			const movementX =
+				(xNorm - lastXNorm) * (typeof window !== 'undefined' ? window.innerWidth || 1 : 1);
+			lastXNorm = xNorm;
+			pending = { xNorm, movementX };
+			if (!raf) raf = requestAnimationFrame(flush);
+		} catch {
+			/* ignore bad orientation samples */
+		}
 	};
 
 	window.addEventListener('deviceorientation', onOrientation, { passive: true });
