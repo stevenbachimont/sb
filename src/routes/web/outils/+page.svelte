@@ -85,7 +85,7 @@
 		color: #fff;
 	}
 
-	@media (max-width: 700px) {
+	@media (max-width: 768px) {
 		.cols {
 			grid-template-columns: 1fr;
 		}

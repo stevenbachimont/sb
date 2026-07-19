@@ -24,16 +24,26 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		height: 10vh;
+		min-height: 70dvh;
+		padding: 1rem 0.3rem;
+		text-align: center;
+		color: #fff;
+		font-family: var(--main-font);
 	}
 
 	.wait-section h2 {
-		font-size: 4rem;
-		margin-bottom: 1rem;
+		font-size: clamp(0.28rem, 6vw, 0.48rem);
+		font-weight: 400;
+		text-transform: uppercase;
+		margin: 0 0 0.25rem;
 	}
 
 	.wait-section p {
-		font-size: 1rem;
+		font-size: 0.14rem;
+		max-width: 4.5rem;
+		opacity: 0.85;
+		line-height: 1.45;
+		margin: 0;
 	}
 
 	.fade-in {
@@ -43,7 +53,7 @@
 	@keyframes fadeIn {
 		from {
 			opacity: 0;
-			transform: translateY(20px);
+			transform: translateY(0.15rem);
 		}
 		to {
 			opacity: 1;

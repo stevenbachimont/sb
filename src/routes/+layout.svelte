@@ -5,16 +5,46 @@
 	import SiteCursor from '$lib/components/SiteCursor.svelte';
 
 	let pageLoaded = false;
+	let menuOpen = false;
 
 	/** @type {boolean} */
 	$: isHome = $page.url.pathname === '/';
+
+	$: if ($page.url.pathname) {
+		menuOpen = false;
+	}
 
 	onMount(() => {
 		setTimeout(() => {
 			pageLoaded = true;
 		}, 600);
 	});
+
+	function toggleMenu() {
+		menuOpen = !menuOpen;
+	}
+
+	function closeMenu() {
+		menuOpen = false;
+	}
+
+	/** @param {MouseEvent} event */
+	function closeMenuOnBackdrop(event) {
+		if (event.target === event.currentTarget) {
+			menuOpen = false;
+		}
+	}
 </script>
+
+<svelte:head>
+	{#if menuOpen}
+		<style>
+			body {
+				overflow: hidden;
+			}
+		</style>
+	{/if}
+</svelte:head>
 
 <div class="page-loader" class:fade-out={pageLoaded}></div>
 <SiteCursor />
@@ -22,19 +52,31 @@
 <div class="site" class:fade-in={pageLoaded}>
 	{#if !isHome}
 		<header class="header">
-			<a href="/" class="header-brand">
+			<a href="/" class="header-brand" on:click={closeMenu}>
 				<span class="header-title">Steven Bachimont</span>
 			</a>
-			<div class="header-menu">
-				<a href="/#about-section" class="header-item">about</a>
-				<a href="/web" class="header-item">works</a>
-				<a href="/contact" class="header-item">contact</a>
-			</div>
-			<a href="/web" class="header-burger" aria-label="Menu">
+			<button
+				type="button"
+				class="header-burger"
+				class:is-open={menuOpen}
+				aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+				aria-expanded={menuOpen}
+				on:click={toggleMenu}
+			>
 				<span></span>
 				<span></span>
-			</a>
+			</button>
 		</header>
+		<nav
+			class="header-menu"
+			class:is-open={menuOpen}
+			aria-label="Navigation principale"
+			on:click={closeMenuOnBackdrop}
+		>
+			<a href="/#about-section" class="header-item" on:click={closeMenu}>about</a>
+			<a href="/web" class="header-item" on:click={closeMenu}>works</a>
+			<a href="/contact" class="header-item" on:click={closeMenu}>contact</a>
+		</nav>
 	{/if}
 
 	<main class="site-main">
@@ -77,7 +119,7 @@
 	}
 
 	.site {
-		min-height: 100vh;
+		min-height: 100dvh;
 		display: flex;
 		flex-direction: column;
 		background: #000;
@@ -93,9 +135,5 @@
 		flex: 1;
 		padding: 0;
 		background: #000;
-	}
-
-	:global(.header-burger) {
-		text-decoration: none;
 	}
 </style>

@@ -57,4 +57,11 @@
 		opacity: 0.7;
 		transform: none;
 	}
+
+	@media (max-width: 768px) {
+		.web-links a {
+			font-size: 0.2rem;
+			max-width: none;
+		}
+	}
 </style>
