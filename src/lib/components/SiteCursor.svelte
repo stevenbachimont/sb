@@ -27,9 +27,12 @@
 	}
 
 	onMount(() => {
+		/* Pas de curseur custom sur tactile / mobile */
 		const fine = window.matchMedia('(pointer: fine)').matches;
-		if (!fine) {
+		const hover = window.matchMedia('(hover: hover)').matches;
+		if (!fine || !hover || window.innerWidth <= 768) {
 			cursorEl.style.display = 'none';
+			document.documentElement.classList.remove('has-site-cursor');
 			return;
 		}
 

@@ -20,6 +20,13 @@ html {
 	scroll-behavior: smooth;
 }
 
+/* Mobile : rem calé ~100px pour garder 0.14rem ≈ 14px (lisible) */
+@media (max-width: 768px) {
+	html {
+		font-size: min(26.6667vw, 100px);
+	}
+}
+
 body {
 	margin: 0;
 	padding: 0;

@@ -56,29 +56,40 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: 22
+          script_stop: true
           script: |
+            set -euo pipefail
             cd /root/sb
 
-            # Récupérer les derniers changements
-            echo "📥 Récupération des derniers changements..."
-            git pull origin ${{ github.ref_name }}
+            EXPECTED_SHA="${{ github.sha }}"
+            BRANCH="${{ github.ref_name }}"
 
-            # Arrêter les conteneurs actuels
-            echo "🛑 Arrêt des conteneurs actuels..."
-            docker-compose down
+            echo "📥 Sync git → $BRANCH ($EXPECTED_SHA)"
+            git fetch origin "$BRANCH"
+            git checkout "$BRANCH"
+            git reset --hard "origin/$BRANCH"
 
-            # Construire et démarrer les nouveaux conteneurs
-            echo "🔨 Construction et démarrage des conteneurs..."
-            docker-compose up -d --build
+            ACTUAL_SHA="$(git rev-parse HEAD)"
+            echo "📌 HEAD VPS: $ACTUAL_SHA"
+            if [ "$ACTUAL_SHA" != "$EXPECTED_SHA" ]; then
+              echo "❌ SHA VPS ≠ SHA GitHub Actions"
+              echo "   attendu: $EXPECTED_SHA"
+              echo "   obtenu:  $ACTUAL_SHA"
+              exit 1
+            fi
 
-            # Vérifier que les conteneurs démarrent correctement
-            echo "🔍 Vérification du démarrage..."
+            echo "🛑 Arrêt des conteneurs..."
+            docker compose down || docker-compose down
+
+            echo "🔨 Build sans cache + redémarrage..."
+            docker compose build --no-cache || docker-compose build --no-cache
+            docker compose up -d || docker-compose up -d
+
+            echo "🔍 Vérification..."
             sleep 10
-            docker-compose ps
+            docker compose ps || docker-compose ps
 
-            # Nettoyer les images Docker inutilisées
-            echo "🧹 Nettoyage des images Docker inutilisées..."
+            echo "🧹 Nettoyage images dangling..."
             docker image prune -f
-            docker system prune -f --volumes
 
-            echo "✅ Déploiement terminé"
+            echo "✅ Déploiement terminé ($ACTUAL_SHA)"

@@ -2,10 +2,17 @@
 	/**
 	 * Port ultra-fidèle de Desktop/test (Wonderland mirror + GSAP)
 	 * + code asynchrone par tuile (CodeTile)
+	 * + mobile : inclinaison du téléphone à la place de la souris
 	 */
 	import { onMount } from 'svelte';
 	import gsap from 'gsap';
 	import CodeTile from '$lib/components/CodeTile.svelte';
+	import {
+		prefersMotionPointer,
+		requestOrientationPermission,
+		subscribeDeviceMotion,
+		orientationSupported
+	} from '$lib/utils/deviceMotion';
 
 	const PHOTO = 'https://laligneargentique.fr/api/galerie/file/5';
 	const TILE_COUNT = 6;
@@ -20,6 +27,11 @@
 
 	let rootEl: HTMLDivElement;
 	let mirrorElements: Element[] = [];
+	let isMobileMotion = false;
+	let motionHint: 'idle' | 'need-tap' | 'active' | 'denied' | 'unsupported' = 'idle';
+
+	/** Activé dans onMount — appelé par le hint iOS (geste utilisateur requis) */
+	let enableMotionFromGesture = async (_event?: Event) => {};
 
 	onMount(() => {
 		const banner = rootEl.querySelector('.banner') as HTMLElement;
@@ -38,22 +50,22 @@
 		const codeBase = () => rootEl.querySelectorAll('.banner-code-layer--base');
 		const photoEls = () => rootEl.querySelectorAll('.banner-img img, .mirror img');
 
-		function animateMirror(e: MouseEvent) {
+		function animateMirror(clientX: number, movementX: number) {
 			const procentLight = Math.min(
-				Math.max((Math.floor((e.clientX / window.innerWidth) * 100) - 20) * 2, 0) - 100,
+				Math.max((Math.floor((clientX / window.innerWidth) * 100) - 20) * 2, 0) - 100,
 				0
 			);
-			const t = e.clientX / window.innerWidth;
+			const t = clientX / window.innerWidth;
 			const codeAlpha = 0.55 + Math.sin(t * Math.PI) * 0.4;
 			const photoAlpha = 0.45 + (1 - codeAlpha) * 0.55;
-			const dir = e.movementX < 0 ? -1 : 1;
+			const dir = movementX < 0 ? -1 : 1;
 
 			gsap
 				.timeline({ defaults: { ease: 'power1.out' } })
 				.to(overs(), {
 					duration: 1,
-					x: e.clientX / 7,
-					stagger: e.movementX < 0 ? -0.2 : 0.2,
+					x: clientX / 7,
+					stagger: movementX < 0 ? -0.2 : 0.2,
 					ease: 'power1.out'
 				})
 				.to(
@@ -61,7 +73,7 @@
 					{
 						duration: 0.5,
 						alpha: 0.9,
-						stagger: e.movementX < 0 ? -0.17 : 0.17,
+						stagger: movementX < 0 ? -0.17 : 0.17,
 						ease: 'power1.out'
 					},
 					'<'
@@ -71,7 +83,7 @@
 					{
 						duration: 0.5,
 						alpha: 1,
-						stagger: e.movementX < 0 ? -0.2 : 0.2,
+						stagger: movementX < 0 ? -0.2 : 0.2,
 						ease: 'power1.out'
 					},
 					'<0.5'
@@ -81,7 +93,7 @@
 					codeBehind(),
 					{
 						duration: 1.2,
-						x: -e.clientX / 6.2,
+						x: -clientX / 6.2,
 						ease: 'power1.out'
 					},
 					'<'
@@ -90,7 +102,7 @@
 					codeWeave(),
 					{
 						duration: 1.15,
-						x: -e.clientX / 9.5,
+						x: -clientX / 9.5,
 						ease: 'power1.out'
 					},
 					'<'
@@ -100,7 +112,7 @@
 					{
 						duration: 1.25,
 						/* légèrement avec l’image → glisse sous la bande droite */
-						x: e.clientX / 22 - e.clientX / 14,
+						x: clientX / 22 - clientX / 14,
 						ease: 'power1.out'
 					},
 					'<'
@@ -109,7 +121,7 @@
 					codeFront(),
 					{
 						duration: 1.1,
-						x: -e.clientX / 11,
+						x: -clientX / 11,
 						ease: 'power1.out'
 					},
 					'<'
@@ -128,7 +140,7 @@
 					codeBase(),
 					{
 						duration: 1.2,
-						x: e.clientX / 16,
+						x: clientX / 16,
 						y: (0.5 - t) * 10,
 						opacity: codeAlpha * 0.92,
 						ease: 'power2.out'
@@ -149,7 +161,7 @@
 					{
 						duration: 0.7,
 						x: procentLight,
-						stagger: e.movementX < 0 ? -0.1 : 0.1
+						stagger: movementX < 0 ? -0.1 : 0.1
 					},
 					'<-0.2'
 				)
@@ -158,7 +170,7 @@
 					{
 						duration: 0.7,
 						x: -procentLight,
-						stagger: e.movementX < 0 ? -0.1 : 0.1
+						stagger: movementX < 0 ? -0.1 : 0.1
 					},
 					'<-0.2'
 				);
@@ -186,70 +198,117 @@
 			img.addEventListener('load', setWidthMirror);
 		});
 
-		/** Interaction miroir au survol du fond (comme après ouverture dans le test) */
+		/** Interaction miroir : souris (desktop) ou inclinaison (mobile) */
 		let hoveringBanner = false;
+		let stopMotion: (() => void) | null = null;
+		let motionStarted = false;
+		isMobileMotion = prefersMotionPointer();
+		if (isMobileMotion) {
+			rootEl.classList.add('is-mobile-motion');
+			motionHint = orientationSupported() ? 'need-tap' : 'unsupported';
+		}
+
 		const onBannerMove = (e: MouseEvent) => {
+			if (isMobileMotion) return;
 			if (hoveringBanner || banner.classList.contains('active')) {
-				animateMirror(e);
+				animateMirror(e.clientX, e.movementX);
 			}
 		};
 
-		const onBannerClick = () => {
-			if (!hero.classList.contains('full')) {
-				hero.classList.add('full');
-				bottomInfo.classList.add('scroll');
+		const startMotionTracking = () => {
+			if (motionStarted || !isMobileMotion) return;
+			motionStarted = true;
+			stopMotion = subscribeDeviceMotion(({ xNorm, movementX }) => {
+				const clientX = xNorm * window.innerWidth;
+				if (hoveringBanner || banner.classList.contains('active') || isMobileMotion) {
+					animateMirror(clientX, movementX);
+				}
+			});
+			motionHint = 'active';
+			gsap.to(rootEl.querySelectorAll('.wonderland-full'), {
+				alpha: 0,
+				ease: 'sine.in',
+				duration: 0.4
+			});
+		};
 
-				gsap
-					.timeline({
-						defaults: { ease: 'none' },
-						onComplete: () => {
-							closeBtn.classList.add('active');
-						}
-					})
-					.to(rootEl.querySelectorAll('.wonderland-descr'), {
+		enableMotionFromGesture = async (_event?: Event) => {
+			if (!isMobileMotion || motionStarted) return;
+			if (!orientationSupported()) {
+				motionHint = 'unsupported';
+				return;
+			}
+			const state = await requestOrientationPermission();
+			if (state === 'granted') {
+				startMotionTracking();
+			} else if (state === 'unsupported') {
+				motionHint = 'unsupported';
+			} else {
+				motionHint = 'denied';
+			}
+		};
+
+		const expandHero = () => {
+			if (hero.classList.contains('full')) return;
+
+			hero.classList.add('full');
+			bottomInfo.classList.add('scroll');
+
+			gsap
+				.timeline({
+					defaults: { ease: 'none' },
+					onComplete: () => {
+						closeBtn.classList.add('active');
+					}
+				})
+				.to(rootEl.querySelectorAll('.wonderland-descr'), {
+					scaleY: 0,
+					alpha: 0,
+					ease: 'sine.in',
+					transformOrigin: 'top',
+					duration: 0.8
+				})
+				.to(
+					rootEl.querySelectorAll('.wonderland-full'),
+					{
 						scaleY: 0,
 						alpha: 0,
 						ease: 'sine.in',
 						transformOrigin: 'top',
 						duration: 0.8
-					})
-					.to(
-						rootEl.querySelectorAll('.wonderland-full'),
-						{
-							scaleY: 0,
-							alpha: 0,
-							ease: 'sine.in',
-							transformOrigin: 'top',
-							duration: 0.8
-						},
-						'<'
-					)
-					.to(
-						overs(),
-						{
-							duration: 2,
-							x: 0,
-							alpha: 1,
-							ease: 'power1.out'
-						},
-						'<'
-					)
-					.to(
-						codeOvers(),
-						{
-							duration: 2,
-							x: 0,
-							alpha: 0.9,
-							ease: 'power1.out'
-						},
-						'<'
-					)
-					.call(() => {
-						banner.classList.add('active');
-						mirrorElements = [banner];
-						setWidthMirror();
-					});
-			}
+					},
+					'<'
+				)
+				.to(
+					overs(),
+					{
+						duration: 2,
+						x: 0,
+						alpha: 1,
+						ease: 'power1.out'
+					},
+					'<'
+				)
+				.to(
+					codeOvers(),
+					{
+						duration: 2,
+						x: 0,
+						alpha: 0.9,
+						ease: 'power1.out'
+					},
+					'<'
+				)
+				.call(() => {
+					banner.classList.add('active');
+					mirrorElements = [banner];
+					setWidthMirror();
+				});
+		};
+
+		const onBannerClick = async () => {
+			await enableMotionFromGesture();
+			expandHero();
 		};
 
 		const onClose = (event: Event) => {
@@ -300,8 +359,8 @@
 				.to(
 					rootEl.querySelectorAll('.wonderland-full'),
 					{
-						scaleY: 1,
-						alpha: 1,
+						scaleY: isMobileMotion && motionStarted ? 0 : 1,
+						alpha: isMobileMotion && motionStarted ? 0 : 1,
 						ease: 'sine.in',
 						transformOrigin: 'top',
 						duration: 0.5
@@ -329,6 +388,7 @@
 		};
 
 		const onEnter = () => {
+			if (isMobileMotion) return;
 			hoveringBanner = true;
 			if (!hero.classList.contains('full')) {
 				gsap.to(rootEl.querySelectorAll('.wonderland-full'), {
@@ -340,6 +400,7 @@
 		};
 
 		const onLeave = () => {
+			if (isMobileMotion) return;
 			hoveringBanner = false;
 			if (!hero.classList.contains('full')) {
 				gsap.to(rootEl.querySelectorAll('.wonderland-full'), {
@@ -363,11 +424,12 @@
 			banner.removeEventListener('mouseenter', onEnter);
 			banner.removeEventListener('mouseleave', onLeave);
 			banner.removeEventListener('mousemove', onBannerMove, true);
+			stopMotion?.();
 		};
 	});
 </script>
 
-<div class="mirror-hero-root" bind:this={rootEl}>
+<div class="mirror-hero-root" class:is-mobile-motion={isMobileMotion} bind:this={rootEl}>
 	<header class="header">
 		<a href="/" class="header-brand">
 			<h1 class="header-title">Steven Bachimont</h1>
@@ -391,6 +453,23 @@
 
 					<div class="wonderland">
 						<button class="wonderland-full" type="button" tabindex="-1" aria-hidden="true"></button>
+						{#if isMobileMotion && motionHint !== 'active'}
+							<button
+								class="motion-hint"
+								type="button"
+								on:click|stopPropagation={enableMotionFromGesture}
+							>
+								{#if motionHint === 'denied'}
+									<span class="motion-hint__label">Mouvement refusé</span>
+									<span class="motion-hint__sub">Autorisez l’orientation dans Réglages</span>
+								{:else if motionHint === 'unsupported'}
+									<span class="motion-hint__label">Touchez pour explorer</span>
+								{:else}
+									<span class="motion-hint__label">Touchez, puis inclinez</span>
+									<span class="motion-hint__sub">Le téléphone pilote le miroir</span>
+								{/if}
+							</button>
+						{/if}
 					</div>
 
 					<div class="banner mirror-wrapp">
