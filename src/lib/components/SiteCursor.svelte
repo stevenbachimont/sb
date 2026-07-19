@@ -10,7 +10,7 @@
 		if (!(el instanceof Element)) return 'default';
 
 		/* Zones « explorer » uniquement */
-		if (el.closest('.banner, .mirror-wrapp, .hero-close.active')) {
+		if (el.closest('.banner, .mirror-wrapp')) {
 			return 'explore';
 		}
 

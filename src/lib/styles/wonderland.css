@@ -508,7 +508,7 @@ html.has-site-cursor * {
     gap: 0.15rem;
   }
   .banner-title {
-    font-size: 0.62rem;
+    font-size: 0.31rem;
     margin-bottom: 0;
     margin-left: 0;
     line-height: 0.95;
@@ -748,10 +748,10 @@ html.has-site-cursor * {
   z-index: 2;
 }
 .banner-title {
-  font-size: 1.63rem;
+  font-size: 0.815rem;
   text-transform: uppercase;
   color: var(--white);
-  margin-bottom: -0.4rem;
+  margin-bottom: -0.2rem;
   margin-left: -0.07rem;
   opacity: 0;
   -webkit-transition: 1.2s;
