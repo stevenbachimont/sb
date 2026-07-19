@@ -37,7 +37,6 @@
 		const banner = rootEl.querySelector('.banner') as HTMLElement;
 		const hero = rootEl.querySelector('#hero') as HTMLElement;
 		const bottomInfo = rootEl.querySelector('#bottom-info') as HTMLElement;
-		const closeBtn = rootEl.querySelector('.hero-close') as HTMLElement;
 
 		const overs = () => Array.from(rootEl.querySelectorAll('.mirror-over'));
 		const codeBehind = () => rootEl.querySelectorAll('.code-over__behind');
@@ -256,10 +255,7 @@
 
 			gsap
 				.timeline({
-					defaults: { ease: 'none' },
-					onComplete: () => {
-						closeBtn.classList.add('active');
-					}
+					defaults: { ease: 'none' }
 				})
 				.to(rootEl.querySelectorAll('.wonderland-descr'), {
 					scaleY: 0,
@@ -306,18 +302,13 @@
 				});
 		};
 
-		const onBannerClick = async () => {
-			await enableMotionFromGesture();
-			expandHero();
-		};
+		const collapseHero = () => {
+			if (!hero.classList.contains('full')) return;
 
-		const onClose = (event: Event) => {
-			event.stopPropagation();
 			hero.classList.remove('full');
 			bottomInfo.classList.remove('scroll');
 			banner.classList.remove('active');
 			mirrorElements = [];
-			closeBtn.classList.remove('active');
 
 			gsap
 				.timeline({
@@ -387,6 +378,15 @@
 				);
 		};
 
+		const onBannerClick = async () => {
+			if (hero.classList.contains('full')) {
+				collapseHero();
+				return;
+			}
+			await enableMotionFromGesture();
+			expandHero();
+		};
+
 		const onEnter = () => {
 			if (isMobileMotion) return;
 			hoveringBanner = true;
@@ -412,7 +412,6 @@
 		};
 
 		banner.addEventListener('click', onBannerClick);
-		closeBtn.addEventListener('click', onClose);
 		banner.addEventListener('mouseenter', onEnter);
 		banner.addEventListener('mouseleave', onLeave);
 		banner.addEventListener('mousemove', onBannerMove, true);
@@ -420,7 +419,6 @@
 		return () => {
 			window.removeEventListener('resize', setWidthMirror);
 			banner.removeEventListener('click', onBannerClick);
-			closeBtn.removeEventListener('click', onClose);
 			banner.removeEventListener('mouseenter', onEnter);
 			banner.removeEventListener('mouseleave', onLeave);
 			banner.removeEventListener('mousemove', onBannerMove, true);
@@ -449,8 +447,6 @@
 		<div class="smooth-wrapper">
 			<div id="smooth-content">
 				<section id="hero" class="hero">
-					<button id="close-collection" class="hero-close" type="button">Back</button>
-
 					<div class="wonderland">
 						<button class="wonderland-full" type="button" tabindex="-1" aria-hidden="true"></button>
 						{#if isMobileMotion && motionHint !== 'active'}
@@ -574,7 +570,7 @@
 							</div>
 						</div>
 						<div class="banner-info">
-							<div class="banner-title">Photo.code</div>
+							<div class="banner-title">Photo.code_dev</div>
 							<div class="banner-left">
 								<img src={PHOTO} alt="" />
 								<div class="banner-social">
