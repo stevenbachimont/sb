@@ -157,17 +157,16 @@
 
 <section class="contact-section {isVisible ? 'fade-in' : ''}">
 	<div class="contact-header">
-		<h1>Contact</h1>
-		<p>
-			N'hésitez pas à me contacter pour toute demande de collaboration, projet web, ou simplement
-			pour échanger. Je réponds rapidement à tous les messages !
+		<h1 class="site-page__title">Contact</h1>
+		<p class="site-page__lead">
+			Collaboration, projet web, ou simplement échanger — écrivez-moi.
 		</p>
 	</div>
 
 	{#if sent}
 		<div class="success-container">
 			<div class="success-message">
-				<h3>✅ Message envoyé avec succès !</h3>
+				<h3>Message envoyé</h3>
 				<p>Je vous recontacterai dans les plus brefs délais.</p>
 				<p><strong>Merci de votre message !</strong></p>
 				<button class="btn-reset" on:click={resetForm}> Envoyer un autre message </button>
@@ -295,99 +294,92 @@
 
 <style>
 	.contact-section {
-		max-width: 700px;
-		margin: 4rem auto;
-		padding: 2rem;
-		background: rgba(0, 0, 0, 0.8);
-		border-radius: 16px;
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-		text-align: center;
+		max-width: 7rem;
+		margin: 0 auto;
+		padding: 0.8rem 0.3rem 1.2rem;
+		text-align: left;
 		opacity: 0;
-		transform: translateY(30px);
+		transform: translateY(0.15rem);
+		font-family: var(--main-font);
+		color: #fff;
+		background: #000;
+		min-height: 100vh;
+	}
+
+	.contact-section.fade-in {
+		opacity: 1;
+		transform: none;
+		transition:
+			opacity 0.8s ease,
+			transform 0.8s ease;
 	}
 
 	.contact-header {
-		margin-bottom: 2rem;
-	}
-
-	.contact-section h1 {
-		font-size: 2.5rem;
-		margin-bottom: 1.5rem;
-		color: var(--color-accent-1);
-		background: linear-gradient(45deg, var(--color-accent-1), var(--color-accent-2));
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-	}
-
-	.contact-section p {
-		font-size: 1.2rem;
-		margin-bottom: 2.5rem;
-		color: #fff;
-		line-height: 1.6;
+		margin-bottom: 0.4rem;
 	}
 
 	.contact-form {
 		display: flex;
 		flex-direction: column;
-		gap: 1.5rem;
+		gap: 0.22rem;
 		align-items: stretch;
+		max-width: 5.5rem;
 	}
 
 	.form-grid {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
-		gap: 1.5rem;
+		gap: 0.22rem;
 	}
 
 	.form-group {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		gap: 0.5rem;
+		gap: 0.08rem;
 	}
 
 	label {
 		color: #fff;
-		font-weight: 600;
-		font-size: 0.95rem;
+		font-weight: 400;
+		font-size: 0.12rem;
+		text-transform: uppercase;
 	}
 
 	input,
 	textarea {
 		width: 100%;
-		padding: 0.8rem;
-		border-radius: 8px;
-		border: 2px solid rgba(255, 255, 255, 0.1);
-		font-size: 1rem;
-		background: rgba(255, 255, 255, 0.1);
+		padding: 0.12rem 0.14rem;
+		border-radius: 0;
+		border: 1px solid rgba(255, 255, 255, 0.35);
+		font-size: 0.14rem;
+		font-family: var(--main-font);
+		background: transparent;
 		color: #fff;
 		outline: none;
-		transition: all 0.3s ease;
 		box-sizing: border-box;
+		cursor: text;
 	}
 
 	input:focus,
 	textarea:focus {
-		border-color: var(--color-accent-1);
-		background: rgba(255, 255, 255, 0.15);
-		box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+		border-color: #fff;
+		background: rgba(255, 255, 255, 0.04);
 	}
 
 	input.error,
 	textarea.error {
-		border-color: #ff6b6b;
-		background: rgba(255, 107, 107, 0.1);
+		border-color: #c44;
 	}
 
 	input::placeholder,
 	textarea::placeholder {
-		color: rgba(255, 255, 255, 0.5);
+		color: rgba(255, 255, 255, 0.4);
 	}
 
 	textarea {
 		resize: vertical;
-		min-height: 120px;
+		min-height: 1.2rem;
 	}
 
 	.message-info {
@@ -398,113 +390,112 @@
 	}
 
 	.char-count {
-		font-size: 0.8rem;
-		color: rgba(255, 255, 255, 0.6);
+		font-size: 0.11rem;
+		color: rgba(255, 255, 255, 0.5);
 	}
 
 	.error-text {
-		color: #ff6b6b;
-		font-size: 0.85rem;
-		font-weight: 500;
+		color: #c44;
+		font-size: 0.11rem;
 	}
 
 	.contact-btn {
-		align-self: center;
-		padding: 1rem 2.5rem;
-		font-size: 1.1rem;
-		color: #000;
-		background: linear-gradient(45deg, var(--color-accent-1), var(--color-accent-2));
-		border: none;
-		border-radius: 8px;
-		text-decoration: none;
-		transition: all 0.3s ease;
+		align-self: flex-start;
+		padding: 0.14rem 0.35rem;
+		font-size: 0.14rem;
+		font-family: var(--main-font);
+		text-transform: uppercase;
+		color: #fff;
+		background: transparent;
+		border: 1px solid #fff;
+		border-radius: 0;
 		cursor: pointer;
-		font-weight: 600;
-		min-width: 200px;
+		margin-top: 0.1rem;
 	}
 
 	.contact-btn:hover:not(:disabled) {
-		background: linear-gradient(45deg, var(--color-accent-2), var(--color-accent-1));
-		transform: translateY(-2px);
-		box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+		opacity: 0.7;
+		transform: none;
+		box-shadow: none;
+		background: transparent;
 	}
 
 	.contact-btn:disabled {
-		opacity: 0.6;
+		opacity: 0.45;
 		cursor: not-allowed;
-		transform: none;
 	}
 
 	.error-message {
-		background: rgba(255, 0, 0, 0.1);
-		border: 1px solid rgba(255, 0, 0, 0.3);
-		color: #ff6b6b;
-		padding: 1rem;
-		border-radius: 8px;
+		border: 1px solid rgba(255, 255, 255, 0.35);
+		color: #fff;
+		padding: 0.16rem;
 		text-align: left;
+		font-size: 0.13rem;
 	}
 
 	.error-message h4 {
-		margin: 0 0 0.5rem 0;
-		font-size: 1rem;
+		margin: 0 0 0.08rem;
+		font-size: 0.14rem;
+		font-weight: 400;
+		text-transform: uppercase;
 	}
 
 	.error-message p {
 		margin: 0;
-		font-size: 0.9rem;
+		font-size: 0.13rem;
+		opacity: 0.85;
 	}
 
 	.success-container {
-		text-align: center;
-		padding: 2rem;
+		text-align: left;
+		padding: 0.2rem 0;
 	}
 
 	.success-message {
-		background: rgba(0, 255, 0, 0.1);
-		border: 1px solid rgba(0, 255, 0, 0.3);
-		border-radius: 12px;
-		padding: 2rem;
-		max-width: 500px;
-		margin: 0 auto;
+		border: 1px solid rgba(255, 255, 255, 0.35);
+		padding: 0.25rem;
+		max-width: 5rem;
 	}
 
 	.success-message h3 {
-		color: #00ff00;
-		margin-bottom: 1rem;
-		font-size: 1.5rem;
+		color: #fff;
+		margin-bottom: 0.12rem;
+		font-size: 0.2rem;
+		font-weight: 400;
+		text-transform: uppercase;
 	}
 
 	.success-message p {
-		color: rgba(255, 255, 255, 0.9);
-		line-height: 1.6;
-		margin-bottom: 1rem;
+		color: rgba(255, 255, 255, 0.85);
+		line-height: 1.4;
+		margin-bottom: 0.12rem;
+		font-size: 0.14rem;
 	}
 
 	.btn-reset {
-		background: linear-gradient(45deg, #00ff00, #00cc00);
-		color: #000;
-		border: none;
-		padding: 0.8rem 1.5rem;
-		border-radius: 8px;
+		background: transparent;
+		color: #fff;
+		border: 1px solid #fff;
+		padding: 0.12rem 0.28rem;
+		border-radius: 0;
 		cursor: pointer;
-		transition: all 0.3s ease;
-		text-decoration: none;
-		font-weight: 600;
-		font-size: 0.95rem;
-		margin-top: 1rem;
+		font-family: var(--main-font);
+		text-transform: uppercase;
+		font-size: 0.13rem;
+		margin-top: 0.15rem;
 	}
 
 	.btn-reset:hover {
-		background: linear-gradient(45deg, #00cc00, #00ff00);
-		transform: translateY(-2px);
-		box-shadow: 0 4px 15px rgba(0, 255, 0, 0.4);
+		opacity: 0.7;
+		transform: none;
+		box-shadow: none;
+		background: transparent;
 	}
 
 	.form-actions {
-		margin-top: 1rem;
+		margin-top: 0.1rem;
 	}
 
-	/* Honeypot field - invisible pour les humains */
 	.honeypot-field {
 		position: absolute;
 		left: -9999px;
@@ -515,108 +506,23 @@
 		pointer-events: none;
 	}
 
-	/* Badge de protection Honeypot */
 	.honeypot-badge {
 		display: flex;
 		align-items: center;
-		justify-content: center;
-		gap: 0.5rem;
-		margin-top: 1.5rem;
-		padding: 0.5rem 1rem;
-		font-size: 0.75rem;
-		color: rgba(255, 255, 255, 0.5);
-		opacity: 0.7;
-		transition: opacity 0.3s ease;
-	}
-
-	.honeypot-badge:hover {
-		opacity: 1;
+		gap: 0.1rem;
+		margin-top: 0.25rem;
+		font-size: 0.11rem;
+		color: rgba(255, 255, 255, 0.4);
+		text-transform: uppercase;
 	}
 
 	.honeypot-icon {
-		color: rgba(255, 215, 0, 0.6);
-		animation: pulse 2s ease-in-out infinite;
+		color: rgba(255, 255, 255, 0.4);
 	}
 
-	@keyframes pulse {
-		0%,
-		100% {
-			opacity: 0.6;
-		}
-		50% {
-			opacity: 1;
-		}
-	}
-
-	/* Animation */
-	.fade-in {
-		opacity: 1;
-		transform: translateY(0);
-		animation: fadeIn 0.8s ease-out;
-	}
-
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-			transform: translateY(30px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	/* Responsive */
-	@media (max-width: 768px) {
-		.contact-section {
-			margin: 2rem 1rem;
-			padding: 1.5rem;
-		}
-
-		.contact-section h1 {
-			font-size: 2rem;
-		}
-
-		.contact-section p {
-			font-size: 1rem;
-		}
-
+	@media (max-width: 700px) {
 		.form-grid {
 			grid-template-columns: 1fr;
-			gap: 1rem;
-		}
-
-		.contact-btn {
-			padding: 0.9rem 2rem;
-			font-size: 1rem;
-			width: 100%;
-			max-width: 300px;
-		}
-	}
-
-	@media (max-width: 480px) {
-		.contact-section {
-			margin: 1rem 0.5rem;
-			padding: 1rem;
-		}
-
-		.contact-section h1 {
-			font-size: 1.8rem;
-		}
-
-		.contact-section p {
-			font-size: 0.95rem;
-		}
-
-		input,
-		textarea {
-			padding: 0.7rem;
-			font-size: 0.95rem;
-		}
-
-		.contact-btn {
-			padding: 0.8rem 1.5rem;
-			font-size: 0.95rem;
 		}
 	}
 </style>

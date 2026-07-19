@@ -6,135 +6,55 @@
 	onMount(() => {
 		setTimeout(() => {
 			isVisible = true;
-		}, 100);
+		}, 80);
 	});
 </script>
 
-<section class="web-section {isVisible ? 'fade-in' : ''}">
-	<div class="web-header">
-		<h1>Développement Web</h1>
-		<p>Découvrez mes projets de développement web et les technologies que j'utilise.</p>
-	</div>
+<section class="site-page" class:is-visible={isVisible}>
+	<h1 class="site-page__title">Développement Web</h1>
+	<p class="site-page__lead">
+		Projets, outils et technologies — le code comme matière, comme le grain de l’argentique.
+	</p>
 
-	<div class="web-content">
-		<div class="web-grid">
-			<div class="web-card">
-				<h3>Portfolio Web</h3>
-				<p>Découvrez mes réalisations web et mes projets de développement.</p>
-				<a href="/web/portfolioWeb" class="btn-primary">Voir le portfolio</a>
-			</div>
-
-			<div class="web-card">
-				<h3>Outils & Technologies</h3>
-				<p>Explorez les technologies et outils que j'utilise dans mes projets.</p>
-				<a href="/web/outils" class="btn-primary">Découvrir les outils</a>
-			</div>
-		</div>
+	<div class="web-links">
+		<a href="/web/portfolioWeb">Portfolio Web →</a>
+		<a href="/web/outils">Outils & Technologies →</a>
 	</div>
 </section>
 
 <style>
-	.web-section {
-		padding: 4rem 2rem;
-		text-align: center;
-		background: #000000;
-		color: white;
-		min-height: 100vh;
+	.site-page {
+		opacity: 0;
+		transform: translateY(0.15rem);
+		transition:
+			opacity 0.8s ease,
+			transform 0.8s ease;
+	}
+
+	.site-page.is-visible {
+		opacity: 1;
+		transform: none;
+	}
+
+	.web-links {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
-		opacity: 0;
-		transform: translateY(30px);
+		gap: 0.2rem;
+		margin-top: 0.4rem;
 	}
 
-	.fade-in {
-		opacity: 1;
-		transform: translateY(0);
-		animation: fadeIn 1s ease-in;
-	}
-
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-			transform: translateY(30px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	.web-header h1 {
-		font-size: 3rem;
-		margin-bottom: 1rem;
-		color: white;
-	}
-
-	.web-header p {
-		font-size: 1.2rem;
-		margin-bottom: 3rem;
-		opacity: 0.9;
-	}
-
-	.web-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 2rem;
-		max-width: 800px;
-		margin: 0 auto;
-	}
-
-	.web-card {
-		background: rgba(255, 255, 255, 0.1);
-		backdrop-filter: blur(10px);
-		border-radius: 15px;
-		padding: 2rem;
-		text-align: center;
-		transition:
-			transform 0.3s ease,
-			box-shadow 0.3s ease;
-	}
-
-	.web-card:hover {
-		transform: translateY(-5px);
-		box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-	}
-
-	.web-card h3 {
-		font-size: 1.5rem;
-		margin-bottom: 1rem;
-		color: white;
-	}
-
-	.web-card p {
-		margin-bottom: 1.5rem;
-		opacity: 0.9;
-	}
-
-	.btn-primary {
-		display: inline-block;
-		background: rgba(255, 255, 255, 0.2);
-		color: white;
-		padding: 0.8rem 1.5rem;
-		border-radius: 25px;
+	.web-links a {
+		font-size: 0.22rem;
+		text-transform: uppercase;
+		color: #fff;
 		text-decoration: none;
-		transition: all 0.3s ease;
-		border: 2px solid rgba(255, 255, 255, 0.3);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+		padding-bottom: 0.12rem;
+		max-width: 5rem;
 	}
 
-	.btn-primary:hover {
-		background: rgba(255, 255, 255, 0.3);
-		transform: translateY(-2px);
-	}
-
-
-	@media (max-width: 768px) {
-		.web-header h1 {
-			font-size: 2rem;
-		}
-
-		.web-grid {
-			grid-template-columns: 1fr;
-		}
+	.web-links a:hover {
+		opacity: 0.7;
+		transform: none;
 	}
 </style>
