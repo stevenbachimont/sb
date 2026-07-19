@@ -27,6 +27,13 @@
 	function closeMenu() {
 		menuOpen = false;
 	}
+
+	/** @param {MouseEvent} event */
+	function closeMenuOnBackdrop(event) {
+		if (event.target === event.currentTarget) {
+			menuOpen = false;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -48,11 +55,6 @@
 			<a href="/" class="header-brand" on:click={closeMenu}>
 				<span class="header-title">Steven Bachimont</span>
 			</a>
-			<nav class="header-menu" class:is-open={menuOpen} aria-label="Navigation principale">
-				<a href="/#about-section" class="header-item" on:click={closeMenu}>about</a>
-				<a href="/web" class="header-item" on:click={closeMenu}>works</a>
-				<a href="/contact" class="header-item" on:click={closeMenu}>contact</a>
-			</nav>
 			<button
 				type="button"
 				class="header-burger"
@@ -65,6 +67,16 @@
 				<span></span>
 			</button>
 		</header>
+		<nav
+			class="header-menu"
+			class:is-open={menuOpen}
+			aria-label="Navigation principale"
+			on:click={closeMenuOnBackdrop}
+		>
+			<a href="/#about-section" class="header-item" on:click={closeMenu}>about</a>
+			<a href="/web" class="header-item" on:click={closeMenu}>works</a>
+			<a href="/contact" class="header-item" on:click={closeMenu}>contact</a>
+		</nav>
 	{/if}
 
 	<main class="site-main">

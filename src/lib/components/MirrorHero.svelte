@@ -38,6 +38,12 @@
 		menuOpen = false;
 	}
 
+	function closeMenuOnBackdrop(event: MouseEvent) {
+		if (event.target === event.currentTarget) {
+			menuOpen = false;
+		}
+	}
+
 	onMount(() => {
 		const banner = rootEl.querySelector('.banner') as HTMLElement;
 		const hero = rootEl.querySelector('#hero') as HTMLElement;
@@ -428,11 +434,6 @@
 		<a href="/" class="header-brand" on:click={closeMenu}>
 			<h1 class="header-title">Steven Bachimont</h1>
 		</a>
-		<nav class="header-menu" class:is-open={menuOpen} aria-label="Navigation principale">
-			<a href="/#about-section" class="header-item" on:click={closeMenu}>about</a>
-			<a href="/web" class="header-item" on:click={closeMenu}>works</a>
-			<a href="/contact" class="header-item" on:click={closeMenu}>contact</a>
-		</nav>
 		<button
 			type="button"
 			class="header-burger"
@@ -445,6 +446,16 @@
 			<span></span>
 		</button>
 	</header>
+	<nav
+		class="header-menu"
+		class:is-open={menuOpen}
+		aria-label="Navigation principale"
+		on:click={closeMenuOnBackdrop}
+	>
+		<a href="/#about-section" class="header-item" on:click={closeMenu}>about</a>
+		<a href="/web" class="header-item" on:click={closeMenu}>works</a>
+		<a href="/contact" class="header-item" on:click={closeMenu}>contact</a>
+	</nav>
 
 	<div class="main">
 		<div class="smooth-wrapper">
